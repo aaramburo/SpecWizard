@@ -1,0 +1,298 @@
+% Parameter file for specwizard
+
+% ------------------------------------------------------
+% Files and directories
+% ------------------------------------------------------
+%Directory containing ionization files:
+ibdir           = /cosma5/data/dp004/dc-wije1/bertone_tables/ionbal/
+%/cosma5/data/dp004/dc-wije1/bertone_tables/ionbal/
+%/cosma/home/dphlss/tt/Tables/IonisationTables/HM01G+C/
+%/cosma5/data/durham/dc-maga1/Aurora/Aurora/L012N512/Aurora_L012N512_FSN0.6_FESC0.5/output/
+
+%Directory containing LOS files:
+datadir  = /cosma7/data/Eagle/ScienceRuns/Planck1/L0012N0188/PE/REFERENCE/data/snapshot_028_z000p000/
+%/cosma/home/dp004/dc-maga1/clusterdata/Aurora/Aurora/L012N512/Aurora_L012N512_FSN0.6_FESC0.5/output/snapshot_056/
+% /cosma7/data/Eagle/ScienceRuns/Planck1/L0012N0188/PE/REFERENCE/data/snapshot_028_z000p000/
+% /cosma/home/dp004/dc-maga1/clusterdata/Aurora/Aurora/L012N512/Aurora_L012N512_FSN0.6_FESC0.5/output/snapshot_050/
+%/cosma7/data/dp004/dc-syke1/EAGLE/L0050N1504/Recal/data/snapshot_012_z003p017/
+
+% ASCII file contianing list of valid LOS files in directory datadir
+% this file must be present inside datadir or SpecWizard will crash
+% the file_list file can also be used to consider only a subset of the
+% available data.
+file_list       = files_short
+
+%Directory to write output files:
+outputdir       = ./los
+%outputdir       = ./no_pecvel
+
+
+% ------------------------------------------------------
+% Data properties
+% ------------------------------------------------------
+gimic      = T    % GIMIC simulation rather than OWLS?
+aurora = T 
+use_snapshot_file = T %Directly extract LOS from snapshots rather Than use LOS files
+snap_base = snap_028_z000p000
+%snap_056
+
+
+%snap_028_z000p000 %snap_012_z003p017
+
+% If we are using snapshot files then we can either pick LOS randomly
+% (use_random_los=T) or specify them in a file (use_random_los=F)
+use_random_los = F
+
+%Only if use_random_los=F and use_snapshot_file=T                    
+%   ASCII text file with following format:
+%     First line, how many LOS in the file
+%     rest of file:  ASCII table with three columns:
+%        First two columns:  Normalized (0->1) coordinate of LOS
+%        Third column: Projection axis (0->2)
+los_coordinates_file = coordinates.hdf5
+
+% ------------------------------------------------------
+% Long or short spectra	
+  % ------------------------------------------------------
+do_long_spectrum  = F  % Make long spectrum by patching together short los?
+
+% ------------------------------------------------------
+% Take into account peculiar velocities or not
+% ------------------------------------------------------
+NoPecVel = F	% if F then peculiar velocities are not taken into account
+
+%-------------------------------------------------------
+% Output Control
+%-------------------------------------------------------
+
+overwrite = T  % Overwrite previous output?
+
+% Number of spectra to create
+% For short spectra this generates the first nspec spectra per file
+% For long spectra this is the total number of spectra to generate
+% For use_random_los=F this number is ignored and the number of spectra 
+% is equal to the number of lines in los_coordinates_file
+nspec      = 1024      % number of spectra to create
+
+%For both long and short spectra
+%Output redshift space quantities weighted by contribution to the optical depth
+%  --/SpectrumN/$ION$/RedshiftSpaceOpticalDepthOfStrongestTransition
+%  --/SpectrumN/$ION$/RedshiftSpaceOpticalDepthWeightedOverDensity
+%  --/SpectrumN/$ION$/RedshiftSpaceOpticalDepthWeightedTemperature_K
+output_zspaceopticaldepthweighted_values = T
+
+%Only for short spectra: 
+%Output real space, mass weighted quantities along the sightline
+%  --/SpectrumN/MassWeighted/LOSPeculiarVelocity_KMpS :
+%  --/SpectrumN/MassWeighted/RealSpaceTemperature_K 
+%  --/SpectrumN/MassWeighted/RealSpaceOverDensity 
+%  --/SpectrumN/MassWeighted/RealSpaceMetalMassFraction
+%All quantities as a function of physical coordinate: /VHubble_KMpS
+output_realspacemassweighted_values = T
+
+%Only for short spectra: 
+%Output real space Nion weighted values separately for each ion
+%  --/SpectrumN/NionWeighted/$ION$/RealSpaceNIon
+%  --/SpectrumN/NionWeighted/$ION$/RealSpaceNIonWeightedLOSPeculiarVelocity_KMpS
+%  --/SpectrumN/NionWeighted/$ION$/RealSpaceNIonWeightedTemperature_K
+%  --/SpectrumN/NionWeighted/$ION$/RealSpaceNionWeightedDensity
+%All quantities as a function of physical coordinate: /VHubble_KMpS
+output_realspacenionweighted_values = T
+
+%If true then write frequencies to output files, rather than wavelengths:
+output_frequency  = F
+
+% ------------------------------------------------------
+% Impose EOS on IGM
+% ------------------------------------------------------
+impose_eos     = F %Impose EOS?
+
+%
+% Temperatures below Tcalc are moved up to Tcalc
+% Tcalc = T0 * (rho/rho_cb)^(gamma-1)
+% up to a maximum overdensity of maxod
+
+imposed_eos_T0     = 12600
+imposed_eos_gamma  = 0.67
+imposed_eos_maxod  = 3000.0
+
+
+% ------------------------------------------------------
+% Ions to include
+% ------------------------------------------------------
+doH1  = T
+doHe2 = F
+doC2  = F
+doC3  = F
+doC4  = F
+doN2  = F
+doN3  = F
+doN4  = F
+doN5  = F
+doO1  = F
+doO3  = F
+doO4  = F
+doO5  = F
+doO6  = F
+doO7  = F
+doMg2 = F
+doNe8 = F
+doAl2 = F
+doAl3 = F
+doSi2 = F
+doSi3 = F
+doSi4 = F
+doS5  = F
+doFe2 = F
+doFe3 = F
+do21cm = F
+
+doall = F  % If T then this has priority
+
+% ------------------------------------------------------
+% Factor to rescale ionizing background with: I_UV = I_UV * ibfactor
+% (only used for calculation of the ionization balance)
+% ------------------------------------------------------
+%Multiply by scalar value
+ibfactor = 1.
+
+%Multiply by redshift dependent function, calibrated from OWLS simulations
+%(overrides value of ibfactor above)
+use_fitted_ibfactor = F
+ibfactor_he_reionization = F
+
+%If the simulation redshift is larger than the largest redshift in the 
+%ionization file then this option makes the code set very high densities
+%i.e. equivalent to the CIE limit
+use_maxdens_above_zmax = T
+
+% ------------------------------------------------------
+% Modify Simulation Metallicity
+% ------------------------------------------------------
+modify_metallicity     = F % Modify metal abundances?
+
+% Everything down to next section is only used if modify_metallicity = T:
+
+% If we specify power law or scatter in the metallicity, then limit its
+% maximum with this parameter:
+maxz_rel               = 10.0 % solar units
+
+% Scale simulation metallicity by a scalar factor?
+scale_simulation_abundances   = F
+z_rel                         = 1.0  %factor by which to scale metallicity
+
+% impose metallicity z = z_mean * (density/mean density)^z_index, up to maximum metallicity maxz_rel
+impose_z_rho_relation  = T
+z_index                = 0.0
+z_mean                 = 1.0 % solar units
+
+% impose log-normal metallicity
+log_normal_scatter     = F
+% divide computational volume in (z_sig_bin)^3 cells, and impose
+% lognormal metallicity with z_sig_dex scatter
+z_sig_bin              = 10 
+z_sig_dex              = 0.7
+
+% scale individual metal abundances by this (linear) factor:
+ZC_rel  = 1.0
+ZN_rel  = 1.0
+ZO_rel  = 1.0
+ZNe_rel = 1.0
+ZMg_rel = 1.0
+ZAl_rel = 1.0
+ZSi_rel = 1.0
+ZS_rel  = 1.0
+ZFe_rel = 1.0
+
+%If true the read a set of particle ids from file 'particle_file_name'
+%and set their metallicities equal to flagged_particle metallicity
+%all other particles have zero metallicity
+read_part_ids_from_file = F
+
+% particle_file_name = [[insert filename here]]
+
+%Metallicity of flagged particles (mass fraction in elements > He)
+flagged_particle_metallicity = 0.02
+
+% ------------------------------------------------------
+% Noise Parameters
+% ------------------------------------------------------
+
+%Add noise to spectrum?
+generate_noise  = F
+
+%Use noise file?
+%  If T then use file describing sigma as a function of flux and wavelength
+%  If F then use sigtonoise and minnoise to generate Gaussian noise
+%  Noise file only works for long spectra, Gaussian noise works for both.
+use_noise_file  = F
+noisefile       = Noise/noise.2d.hdf5
+
+% Properties of Gaussian noise:
+% sigma = minnoise + (1/sigtonoise - minnoise) * flux
+% Note that we must have minnoise < 1 / sigtonoise
+sigtonoise      = 100.0
+minnoise        = 0.0001
+
+% If noise is generated for a spectrum, the following variables are written to
+% the file for each spectrum: 
+%
+%     --SpectrumN/Flux  (noise free spectrum, always written)
+%     --SpectrumN/Noise_Sigma (standard deviation of the noise at each pixel)
+%     --SpectrumN/Gaussian_deviate (mean=0, sigma=1 Gaussian random number for each pixel)
+
+
+% ------------------------------------------------------
+% Accuracy parameters
+% ------------------------------------------------------
+
+% minimum optical depth to consider for transitions with rest-frame
+% wavelength smaller than that of H{\sc i} Ly$\alpha$.  The smaller this
+% number the more accurate the results, but the slower the code will
+% run.
+minbother_blue = 1e-13
+
+% minimum optical depth to consider for transitions with rest-frame
+% wavelength longer than that of H{\sc i} Ly$\alpha$.  The smaller this
+% number the more accurate the results, but the slower the code will
+% run.
+minbother_red = 1e-14
+
+% properties of spectra before rebinning: pixel size in km/s
+% specwizard will stop if this is too small compared with 
+% the above parameters.
+vpixsizekms = 1.
+
+% ------------------------------------------------------
+% Properties of the instrument
+% ------------------------------------------------------
+
+%Convolve output spectrum with instrumental profile?
+do_convolve_spectrum = F
+fwhm = 6.6      % FWHM of instrumental broadening (Gaussian) in km/s
+
+
+% ------------------------------------------------------
+% Required when do_long_spectrum = T
+% ------------------------------------------------------
+zqso       = 3.0    % QSO redshift
+minlambda  = 4000.0 % Min observed wavelength (A)
+maxlambda  = 4200.0 % Max observed wavelength (A)
+zabsmin    = 2.1    % Min allowed absorption redshift 
+zabsmax    = 6.0    % Max allowed absorption redshift 
+nlyman     = 1      % Number of Lyman lines (1 = Ly-alpha, 2 =
+%                     alpha-beta, etc.; neg. value = use nlyman_all = 31)
+fzresol    = 0.05   % Bin size for simulation files: dz = fzresol*(1+z)
+%                     sight lines are drawn from files with 
+%                     z_file = z +/- fzresol*(1+z)/2
+%
+
+%For long spectra, output file name
+%ContinuousSpectrumFile = LongSpectrum.hdf5
+
+% Properties of the final long spectrum:
+% pixsize = 0.04      % pixel size in Angstrom
+pixsize = 0.02      % pixel size in Angstrom
+
+
+
