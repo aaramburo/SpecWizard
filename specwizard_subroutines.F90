@@ -309,6 +309,9 @@ contains
           ZFe_rel = read_real(inline)
         else if (parm == 'gimic') then
           gimic = read_logical(inline(first(3):last(3)))
+        !andres
+        else if (parm == 'aurora') then									
+		  aurora = read_logical(inline(first(3):last(3)))
         else if (parm == 'urchin') then
           urchin = read_logical(inline(first(3):last(3)))
         else if (parm == 'do_periodic') then
