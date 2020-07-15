@@ -343,6 +343,7 @@ module runtime
   logical  :: overwrite = .false.                     ! if true, overwrite output file.
   logical  :: use_maxdens_above_zmax = .false.        ! use maximum density above the maximum redshift in the ionization tables
   logical  :: gimic = .false.                         ! gimic or owls los files?
+  logical  :: aurora = .false. 						  ! check if we are reading aurora snapshots , if true will read and use netrual fractions from the snapshots (andres)
   logical  :: urchin = .false.                        ! if true, read and use neutral fractions from post-processed snapshot files in urchin_dir
   logical  :: do_periodic = .true.                    ! if true, implements periodic boundary conditions
   character(len=300) :: urchindir = invalid           ! urchin file directory containing files for this snapshot
