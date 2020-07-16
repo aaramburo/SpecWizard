@@ -8,8 +8,8 @@ include make.cosma5_2018-2.intel
 #include make.CLUSTER
 #include make.volans
 
-FFLAGS = $(FOPTIMIZED)
-#FFLAGS = $(FDEBUG)
+#FFLAGS = $(FOPTIMIZED)
+FFLAGS = $(FDEBUG)
 #CFLAGS = $(CDEBUG)
 
 #OPTIONS  = -DEAGLE

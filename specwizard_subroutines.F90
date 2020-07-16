@@ -4496,7 +4496,7 @@ subroutine read_full_snapshot()
 #endif
 	if(aurora) then
 		longfile = trim(snap_base)//'.0.hdf5'
-	endif
+	
 	else
 		longfile = trim(basefile)//'.0.hdf5'
 	endif
