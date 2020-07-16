@@ -4490,11 +4490,15 @@ subroutine read_full_snapshot()
   if(.not. single_file)then
     ! multi-file format
 #ifdef EAGLE
-     basefile = trim(datadir)//trim(snap_base)
+	if(aurora) then
+		basefile = trim(datadir)//'/'//trim(snap_base)
+	else:
+		basefile = trim(datadir)//trim(snap_base)
+    endif    
 #else
     basefile = trim(datadir)//'/snapshot_'//trim(FileNumber)//'/snap_'//trim(FileNumber)
 #endif
-	if(aurora) then
+	if(aurora) then														!andres
 		longfile = trim(snap_base)//'.0.hdf5'
 	
 	else
