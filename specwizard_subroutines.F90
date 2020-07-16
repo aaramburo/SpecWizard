@@ -4491,7 +4491,7 @@ subroutine read_full_snapshot()
     ! multi-file format
 #ifdef EAGLE
 	if(aurora) then
-		basefile = trim(datadir)//trim(snap_base)
+		basefile = trim(datadir)
 	else
 		basefile = trim(datadir)//trim(snap_base)
     endif    
