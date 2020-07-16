@@ -4451,7 +4451,7 @@ subroutine read_full_snapshot()
   implicit none
   !
   ! local variables
-  character(len=121)       :: basefile, urchin_basefile, longfile, urchin_longfile
+  character(len=122)       :: basefile, urchin_basefile, longfile, urchin_longfile
   integer                  :: file_handle, urchin_file_handle
   integer                  :: part_file_handle
   character(len=120)       :: LosNumber, LosName, VarName
