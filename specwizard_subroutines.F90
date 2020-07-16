@@ -4494,7 +4494,12 @@ subroutine read_full_snapshot()
 #else
     basefile = trim(datadir)//'/snapshot_'//trim(FileNumber)//'/snap_'//trim(FileNumber)
 #endif
-    longfile = trim(basefile)//'.0.hdf5'
+	if(aurora) then
+		longfile = trim(snap_base)//'.0.hdf5'
+	endif
+	else
+		longfile = trim(basefile)//'.0.hdf5'
+	endif
     if(urchin) then
       urchin_basefile = trim(urchindir)//'/snap_999.'
     endif
