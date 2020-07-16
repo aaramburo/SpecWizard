@@ -4667,7 +4667,7 @@ subroutine read_full_snapshot()
   ! Metallicity
   if (MyPE == 0) &
        write (*,*) ' reading Z'
-  if(use_smoothed_abundance) then
+  if(use_smoothed_abundance) then										!aurora does not have smoothed Metallicity 
      np =  read_dataset(snapinfo, 0, 'SmoothedMetallicity', Metallicity)
   else
      np =  read_dataset(snapinfo, 0, 'Metallicity', Metallicity)
@@ -4752,6 +4752,14 @@ subroutine read_full_snapshot()
        VarName = trim('PartType0')//'//MolecularHydrogenMassFraction'
        call hdf5_read_data(urchin_file_handle, VarName, &
          ParticleMolecularHFraction(NTotal+1:NTotal+Npart_this_file))
+     endif
+     if(aurora) then
+		VarName = trim('PartType0')//'//apHI'
+		call hdf5_read_data(file_handle, VarName, &
+         ParticleNeutralHFraction(NTotal+1:NTotal+Npart_this_file))
+       !VarName = trim('PartType0')//'//MolecularHydrogenMassFraction' maybe molecularHydrogen Mass fraction does not make sense for auora 
+       !call hdf5_read_data(urchin_file_handle, VarName, &
+       !ParticleMolecularHFraction(NTotal+1:NTotal+Npart_this_file))        
      endif
      !
      if(gimic)then
