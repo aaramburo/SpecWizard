@@ -4492,7 +4492,7 @@ subroutine read_full_snapshot()
 #ifdef EAGLE
 	if(aurora) then
 		basefile = trim(datadir)//'/'//trim(snap_base)
-	else:
+	else
 		basefile = trim(datadir)//trim(snap_base)
     endif    
 #else
