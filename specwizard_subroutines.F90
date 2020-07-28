@@ -4598,8 +4598,17 @@ subroutine read_full_snapshot()
   snapinfo = open_snapshot(longfile)
   Bsize = BoxSize
   !!call select_region(snapinfo, 0.0, BSize, 0.0, BSize, 0.0, BSize)
-  call select_region(snapinfo, RegionExtentX(1), RegionExtentX(2), RegionExtentY(1), RegionExtentY(2), RegionExtentZ(1), RegionExtentZ(2))
+  if (aurora) then
+	RegionExtentX(1)= 0
+	RegionExtentX(2) = Bsize
+	RegionExtentY(1) = 0
+	RegionExtentY(2) = Bsize
+	RegionExtentZ(1) = 0
+	RegionExtentZ(2) = Bsize
+  else
+		call select_region(snapinfo, RegionExtentX(1), RegionExtentX(2), RegionExtentY(1), RegionExtentY(2), RegionExtentZ(1), RegionExtentZ(2))
   !!  call select_region(snapinfo, 4.0, 5.0, 2.0, 3.0, 3.0, 4.0)
+  endif
   Ngas = count_particles(snapinfo, 0)
   if(MyPE == 0) then
      write(*,*)"Boxsize   = ", snapinfo%boxsize
