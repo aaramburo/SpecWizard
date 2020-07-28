@@ -4018,7 +4018,7 @@ subroutine readdata_owls(filename,los_number)
   integer, intent(in)     :: los_number
   !
   ! local variables
-  character(len=300)       :: basefile, longfile
+  character(len=600)       :: basefile, longfile
   integer                  :: file_handle
   character(len=120)       :: LosNumber, LosName, VarName
   character(len=3)         :: FileNumber
@@ -4491,7 +4491,7 @@ subroutine read_full_snapshot()
     ! multi-file format
 #ifdef EAGLE
 	if(aurora) then
-		basefile = trim(datadir)
+		basefile = trim(datadir)//trim(snap_base)
 	else
 		basefile = trim(datadir)//trim(snap_base)
     endif    
@@ -4499,7 +4499,7 @@ subroutine read_full_snapshot()
     basefile = trim(datadir)//'/snapshot_'//trim(FileNumber)//'/snap_'//trim(FileNumber)
 #endif
 	if(aurora) then														!andres
-		longfile = trim(snap_base)//'.0.hdf5'
+		longfile = trim(basefile)//'.0.hdf5'
 	
 	else
 		longfile = trim(basefile)//'.0.hdf5'
