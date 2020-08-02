@@ -36,9 +36,11 @@ contains
     ! initialize required parameters to invalid
     ibdir           = invalid
     datadir         = invalid
-#ifdef EAGLE
+
+#if defined(EAGLE) || defined(auora) 
     snap_base       = invalid
 #endif
+
     outputdir       = invalid
     do_long_spectrum = .false. ! default
     ! 
@@ -88,10 +90,11 @@ contains
           ibdir           = inline(first(3):last(3))
         else if (parm == 'datadir') then
           datadir         = inline(first(3):last(3))
-#ifdef EAGLE
+#if defined(EAGLE) || defined(auora) 
        else if (parm == 'snap_base') then
           snap_base  = inline(first(3):last(3))
 #endif
+
         else if (parm == 'file_list') then
           file_list       = inline(first(3):last(3))
         else if (parm == 'outputdir')then
@@ -509,7 +512,7 @@ call abortrun('Variable datadir is uninitialized in parameter file. stop')
     if(.not. do_long_spectrum .and. use_noise_file) &
       call abortrun('You cannot use a noise file for a short spectrum, change noise settings! stop')
     !
-#ifdef EAGLE
+#if defined(EAGLE) || defined(auora) 
     if(use_snapshot_file .and. (snap_base .eq. invalid)) &
       call abortrun('As use_snapshot_file = T then need to specify snapshpt base name  in parameter file. stop')
 #else
@@ -956,7 +959,7 @@ subroutine initialize_spectral_parameters
     allocate(nlos_in_file(nlosfiles))
     allocate(simz(nlosfiles))
     allocate(ichoose(nlosfiles))
-#ifdef EAGLE
+#if defined(EAGLE) || defined(auora) 
     simfile(1) = trim(snap_base)//'.0.hdf5'
 #else
     write (FileNumber,'(I3.3)') snap
