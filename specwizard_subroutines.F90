@@ -1614,6 +1614,19 @@ subroutine projectdata()
               ionfrac(si2_index) = ParticleNeutralHFraction(i)
           endif
         endif
+        if(aurora) then
+          if(subtract_Hmol) then
+            if(h1_index .gt. 0) &
+              ionfrac(h1_index)  = ParticleNeutralHFraction(i) * (1.0d0 - ParticleMolecularHFraction(i) )
+            if(si2_index .gt. 0) &
+              ionfrac(si2_index) = ParticleNeutralHFraction(i) * (1.0d0 - ParticleMolecularHFraction(i) )
+          else
+            if(h1_index .gt. 0) &
+              ionfrac(h1_index)  = ParticleNeutralHFraction(i)
+            if(si2_index .gt. 0) &
+              ionfrac(si2_index) = ParticleNeutralHFraction(i)
+          endif
+        endif        
         !
         if(ionfracone) then
           totnr_ion(:) = MassFractions(ion_elnr(:),i) * Mass(i) / ElementAtomicMass(ion_elnr(:)) ! [Msun/g]
