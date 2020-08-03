@@ -31,7 +31,7 @@ outputdir       = ./los
 % ------------------------------------------------------
 % Data properties
 % ------------------------------------------------------
-gimic      = T    % GIMIC simulation rather than OWLS?
+gimic      = F    % GIMIC simulation rather than OWLS?
 aurora = T
 use_snapshot_file = T %Directly extract LOS from snapshots rather Than use LOS files
 snap_base = snap_056 
