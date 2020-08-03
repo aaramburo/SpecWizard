@@ -636,10 +636,10 @@ module particledata
   integer(kind=singleI), allocatable :: PartID(:)
 #endif
   !
-#ifdef EAGLE
-  real(kind=doubleR), allocatable :: Position(:,:)
-  real(kind=doubleR), allocatable :: Velocity(:,:)!!!, ShiftedPosition(:,:), ShiftedVelocity(:,:)
-  real(kind=doubleR), allocatable:: Mass(:),ParticleDensity(:),&
+#ifdef EAGLE !doubleR 
+  real(kind=singleR), allocatable :: Position(:,:)
+  real(kind=singleR), allocatable :: Velocity(:,:)!!!, ShiftedPosition(:,:), ShiftedVelocity(:,:)
+  real(kind=singleR), allocatable:: Mass(:),ParticleDensity(:),&
     ParticleSmoothingLength(:),ParticleTemperature(:), Metallicity(:), & 
     MassFractions(:,:),  &
     MetallicityInSolar(:), Zmetal(:), Zrelat(:), StarFormationRate(:),&

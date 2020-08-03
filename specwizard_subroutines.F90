@@ -36,11 +36,9 @@ contains
     ! initialize required parameters to invalid
     ibdir           = invalid
     datadir         = invalid
-
-#if defined(EAGLE) || defined(auora) 
+#if defined(EAGLE) || defined(AURORA)
     snap_base       = invalid
 #endif
-
     outputdir       = invalid
     do_long_spectrum = .false. ! default
     ! 
@@ -90,7 +88,7 @@ contains
           ibdir           = inline(first(3):last(3))
         else if (parm == 'datadir') then
           datadir         = inline(first(3):last(3))
-#if defined(EAGLE) || defined(auora) 
+#if defined(EAGLE) || defined(AURORA)
        else if (parm == 'snap_base') then
           snap_base  = inline(first(3):last(3))
 #endif
@@ -512,7 +510,7 @@ call abortrun('Variable datadir is uninitialized in parameter file. stop')
     if(.not. do_long_spectrum .and. use_noise_file) &
       call abortrun('You cannot use a noise file for a short spectrum, change noise settings! stop')
     !
-#if defined(EAGLE) || defined(auora) 
+#if defined(EAGLE) || defined(AURORA) 
     if(use_snapshot_file .and. (snap_base .eq. invalid)) &
       call abortrun('As use_snapshot_file = T then need to specify snapshpt base name  in parameter file. stop')
 #else
@@ -959,7 +957,7 @@ subroutine initialize_spectral_parameters
     allocate(nlos_in_file(nlosfiles))
     allocate(simz(nlosfiles))
     allocate(ichoose(nlosfiles))
-#if defined(EAGLE) || defined(auora) 
+#if defined(EAGLE) || defined(AURORA)
     simfile(1) = trim(snap_base)//'.0.hdf5'
 #else
     write (FileNumber,'(I3.3)') snap
@@ -1357,7 +1355,7 @@ subroutine create_spectrum_file(ifile)
   if (.not. use_snapshot_file) then
     inputfile = trim(datadir)//'/'//trim(simfile(ifile))
   else
-#ifdef EAGLE
+#if defined(EAGLE) || defined(AURORA)
      inputfile = trim(datadir)//trim(snap_base)//'.hdf5'
 #else
     write (FileNumber,'(I3.3)') snap
@@ -1365,7 +1363,7 @@ subroutine create_spectrum_file(ifile)
 #endif
     inquire(file=inputfile,exist=single_file)
     if(.not. single_file)then
-#ifdef EAGLE
+#if defined(EAGLE) || defined(AURORA)
        inputfile = trim(datadir)//trim(snap_base)//'.0.hdf5'
 #else
        inputfile = trim(datadir)//'/snapshot_'//trim(FileNumber)//'/snap_'//trim(FileNumber)//'.0.hdf5'
