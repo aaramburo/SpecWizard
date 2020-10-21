@@ -323,7 +323,7 @@ module runtime
   !
   character(len=120) :: parameter_file = 'specwizard.par'  ! The parameter filename, read from command line
   character(len=300) :: datadir = invalid             ! los file directory, or data directory containing snapshots
-#ifdef EAGLE
+#if defined (EAGLE) || defined(AURORA)
   character(len=300) :: snap_base                     ! base-name -f eagle snapshot
 #endif
   character(len=300) :: outputdir = invalid           ! file output directory
@@ -630,16 +630,16 @@ module particledata
   real(kind=doubleR)    :: Boxkms
   !
   integer(kind=singleI) :: NGas
-#ifdef EAGLE
+#if defined (EAGLE) || defined(AURORA)
   integer(kind=doubleI), allocatable :: PartID(:)
 #else
   integer(kind=singleI), allocatable :: PartID(:)
 #endif
   !
 #ifdef EAGLE !doubleR 
-  real(kind=singleR), allocatable :: Position(:,:)
-  real(kind=singleR), allocatable :: Velocity(:,:)!!!, ShiftedPosition(:,:), ShiftedVelocity(:,:)
-  real(kind=singleR), allocatable:: Mass(:),ParticleDensity(:),&
+  real(kind=doubleR), allocatable :: Position(:,:)
+  real(kind=doubleR), allocatable :: Velocity(:,:)!!!, ShiftedPosition(:,:), ShiftedVelocity(:,:)
+  real(kind=doubleR), allocatable:: Mass(:),ParticleDensity(:),&
     ParticleSmoothingLength(:),ParticleTemperature(:), Metallicity(:), & 
     MassFractions(:,:),  &
     MetallicityInSolar(:), Zmetal(:), Zrelat(:), StarFormationRate(:),&

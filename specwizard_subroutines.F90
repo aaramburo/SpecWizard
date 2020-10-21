@@ -21,12 +21,12 @@ contains
     integer               :: first(maxwords), last(maxwords), nwords
     integer               :: i, line_len
     logical               :: in_quote, quoted
-    character, parameter       :: quote = "'", space = ' ', & 
-         tab = '     ', hash = '#', & 
+    character, parameter       :: quote = "'", space = ' ', &
+         tab = '     ', hash = '#', &
          equals = '=', comment='%'
     character(len=1)            :: tf
     character(len=3), parameter :: bad = 'bad'
-    !    
+    !
     open(unit=10,file=parameter_file,status='old', iostat=io_status)
     if(io_status /= 0) then
        write(*,*) parameter_file
@@ -41,7 +41,7 @@ contains
 #endif
     outputdir       = invalid
     do_long_spectrum = .false. ! default
-    ! 
+    !
     do
       read(10,'(a300)',iostat=io_status) inline
       if(io_status > 0) then ! error in reading
@@ -61,7 +61,7 @@ contains
         in_quote = .false.
         do i = 1, line_len
           if (inline(i:i) == quote) in_quote = .not. in_quote
-          if ((inline(i:i) == tab) .and. (.not. in_quote))  & 
+          if ((inline(i:i) == tab) .and. (.not. in_quote))  &
                &          inline(i:i) = space
         enddo
         !
@@ -311,7 +311,7 @@ contains
         else if (parm == 'gimic') then
           gimic = read_logical(inline(first(3):last(3)))
         !andres
-        else if (parm == 'aurora') then									
+        else if (parm == 'aurora') then
 		  aurora = read_logical(inline(first(3):last(3)))
         else if (parm == 'urchin') then
           urchin = read_logical(inline(first(3):last(3)))
@@ -390,7 +390,7 @@ contains
     implicit none
     !
     if (.not. LLT(datadir,invalid) .and. .not. LGT(datadir,invalid)) &
-      
+
 call abortrun('Variable datadir is uninitialized in parameter file. stop')
     !
     if(do_long_spectrum) then
@@ -403,7 +403,7 @@ call abortrun('Variable datadir is uninitialized in parameter file. stop')
     !
     if (.not. LLT(outputdir,invalid) .and. .not. LGT(outputdir,invalid)) &
       call abortrun('Variable outputdir is uninitialized in parameter file. stop')
-    !    
+    !
     if (.not. LLT(ibdir,invalid) .and. .not. LGT(ibdir,invalid)) &
       call abortrun('Variable ibdir is uninitialized in parameter file. stop')
     !
@@ -417,7 +417,7 @@ call abortrun('Variable datadir is uninitialized in parameter file. stop')
     !
     if (nLyman .eq. invalid_I) &
       call abortrun('Variable nLyman is uninitialized in parameter file. stop')
-    !    
+    !
     if (ibfactor .eq. invalid_R) &
       call abortrun('Variable ibfactor is uninitialized in parameter file. stop')
     !
@@ -478,7 +478,7 @@ call abortrun('Variable datadir is uninitialized in parameter file. stop')
     !
     if(use_noise_file) then
       if (.not. LLT(noisefile,invalid) .and. .not. LGT(noisefile,invalid)) &
-        call abortrun('Variable noisefile is uninitialized in parameter file. stop')      
+        call abortrun('Variable noisefile is uninitialized in parameter file. stop')
     endif
     if (ZC_rel .eq. invalid_R) &
       call abortrun('Variable ZC_rel is uninitialized in parameter file. stop')
@@ -510,7 +510,7 @@ call abortrun('Variable datadir is uninitialized in parameter file. stop')
     if(.not. do_long_spectrum .and. use_noise_file) &
       call abortrun('You cannot use a noise file for a short spectrum, change noise settings! stop')
     !
-#if defined(EAGLE) || defined(AURORA) 
+#if defined(EAGLE) || defined(AURORA)
     if(use_snapshot_file .and. (snap_base .eq. invalid)) &
       call abortrun('As use_snapshot_file = T then need to specify snapshpt base name  in parameter file. stop')
 #else
@@ -542,7 +542,7 @@ call abortrun('Variable datadir is uninitialized in parameter file. stop')
       call abortrun("integrate cublic spline kernel isn't working yet. stop")
     endif
     !
-    if (modify_metallicity .and. read_part_ids_from_file) then 
+    if (modify_metallicity .and. read_part_ids_from_file) then
       write(*,*)'if YOU ARE READING METALLICITIES FROM FILE (read_part_ids_from_file) '
       write (*,*) 'YOU SHOULD NOT ALSO BE USING modify_metallicity'
       write(*,*)'modify_metallicity will just overwrite this!  Fix parameters!'
@@ -737,7 +737,7 @@ module get_argumentsmod
   contains
   !
   integer function get_nargs()
-    integer :: iargc    
+    integer :: iargc
     get_nargs = iargc()
     return
   end function get_nargs
@@ -965,8 +965,8 @@ subroutine initialize_spectral_parameters
 #endif
     nlos_in_file(:) = 1
     !
-    x_axis = 0 
-    y_axis = 1 
+    x_axis = 0
+    y_axis = 1
     z_axis = 2
     !
     longfile = trim(datadir)//'/'//trim(simfile(1))
@@ -981,7 +981,7 @@ subroutine initialize_spectral_parameters
     !
   else
     !
-    ! file file_list (set in par file) contains names of all available spectrum files 
+    ! file file_list (set in par file) contains names of all available spectrum files
     input_files = trim(file_list)
     open(unit=1,file=input_files,status='old',form='formatted',iostat=ier)
     !
@@ -1037,7 +1037,7 @@ subroutine initialize_spectral_parameters
     !
   endif
   !
-  dodo_long_spectrum: if (do_long_spectrum) then 
+  dodo_long_spectrum: if (do_long_spectrum) then
     !
     if(MyPE == 0)then
       !
@@ -1050,7 +1050,7 @@ subroutine initialize_spectral_parameters
         call abortrun('stop')
       endif
     endif
-    ! 
+    !
     !     ------------------
     !     Derived constants:
     !     ------------------
@@ -1060,7 +1060,7 @@ subroutine initialize_spectral_parameters
     !  Make nvpix odd (convlv expects Gaussian to be of odd size, and Gaussian is filled up to nvpix
     if (mod(nvpix,2) .eq. 1) nvpix = nvpix + 1
     !
-    !     For convolution with instrumental profile we need to Fourier 
+    !     For convolution with instrumental profile we need to Fourier
     !     transform, we thus need to increase the array so that it is a
     !     power of 2.
     nvpix   = int(2**(aint(log(dble(nvpix))/log(2.)) + 1))
@@ -1080,7 +1080,7 @@ subroutine initialize_spectral_parameters
       voverc(i) = dble(i-1) * vpixsize
     enddo
     !
-    lambda = minlambda * exp(voverc) 
+    lambda = minlambda * exp(voverc)
     !
     if (output_realspacenionweighted_values .or. output_realspacemassweighted_values) then
       ! write(*, '("Set up voverc_realspace: ", I8, " pixels, v/c = ", E12.4)') nppix, vpixsize
@@ -1094,8 +1094,8 @@ subroutine initialize_spectral_parameters
     !     -------------------
     !     Read in noise file.
     !     -------------------
-    ! 
-    if (generate_noise) then 
+    !
+    if (generate_noise) then
       if (use_noise_file) then
         !     Load table size.
         call load_noise()
@@ -1115,7 +1115,7 @@ subroutine initialize_spectral_parameters
         if (n_flux(1) .ge. 0.) n_flux(1) = -0.001
         if (n_flux(n_nf) .le. 1.) n_flux(n_nf) = 1.001
       else
-        if (minnoise .ge. 1d0 / sigtonoise .and. MyPE == 0) then 
+        if (minnoise .ge. 1d0 / sigtonoise .and. MyPE == 0) then
           write(*,*) 'ERROR: Must have minnoise < 1/sigtonoise'
           call abortrun('stop')
         endif
@@ -1197,7 +1197,7 @@ subroutine get_los_coordinates()
   integer :: i, nspec_in
   real(kind=doubleR), allocatable :: proj(:)
   !
-  if (use_random_los) then 
+  if (use_random_los) then
     call init_random_numbers(777)
     !
     number_of_LOS = nspec
@@ -1229,7 +1229,7 @@ subroutine get_los_coordinates()
      	DO i = 1, number_of_LOS
            READ(77,*) x_fraction_array(i), y_fraction_array(i), z_fraction_array(i)
      	ENDDO
-     	WRITE(*,*) '### enforcing the LOS to be along the z axis ###'	
+     	WRITE(*,*) '### enforcing the LOS to be along the z axis ###'
      	z_fraction_array = 0
 
      	phi_array   = 0
@@ -1259,7 +1259,7 @@ subroutine get_los_coordinates()
      endif
      allocate(x_fraction_array(number_of_LOS),y_fraction_array(number_of_LOS),z_fraction_array(number_of_LOS),&
           phi_array(number_of_LOS),theta_array(number_of_LOS),ncontribute(number_of_LOS),ncontribute_global(number_of_LOS))
-     
+
      ! read desired projection coordinates and copy
      allocate(proj(nspec_in))
      call hdf5_read_data(file_handle, 'Projection/x_fraction_array', proj)
@@ -1288,7 +1288,7 @@ subroutine get_los_coordinates()
     ! allocate(x_fraction_array(number_of_LOS),y_fraction_array(number_of_LOS),z_fraction_array(number_of_LOS),&
     !   phi_array(number_of_LOS),theta_array(number_of_LOS))
     ! !
-    ! do i = 1, number_of_LOS                  
+    ! do i = 1, number_of_LOS
     !    !!      read(77,*) x_fraction_array(i), y_fraction_array(i), z_fraction_array(i), phi_array(i), theta_array(i)
     !    read(77,*) x_fraction_array(i), y_fraction_array(i)
     ! enddo
@@ -1298,7 +1298,7 @@ subroutine get_los_coordinates()
     ! !
     ! close(77)
     !
-#endif 
+#endif
 !AliVersion
 
   endif
@@ -1351,7 +1351,7 @@ subroutine create_spectrum_file(ifile)
     !
   endif
   !
-  ! find and open the first input file 
+  ! find and open the first input file
   if (.not. use_snapshot_file) then
     inputfile = trim(datadir)//'/'//trim(simfile(ifile))
   else
@@ -1434,7 +1434,7 @@ subroutine projectdata()
   use ionization_tables
   use modified_metallicity, only : modify_metallicity
   use w4_gadget_spline_kernel_class
-  implicit none 
+  implicit none
   !
   ! local variables
   integer(kind=singleI) :: i, ioff, iiz, j, iz, ii, ion,iz1, iz2, h1_index=-1, si2_index=-1
@@ -1466,7 +1466,7 @@ subroutine projectdata()
   veloc_ion = 0.0  ! number dens weighted velocity
   !
   ! Redshift interpolation for ionizing background
-  if (nz .gt. 1) then 
+  if (nz .gt. 1) then
     if (.not. use_maxdens_above_zmax) then
       if (zcurrent .lt. ib_redshift(1) .or. zcurrent .gt. ib_redshift(nz))then
         write(*,*) 'ERROR: z out of bounds ioniz. bal. table!'
@@ -1552,15 +1552,15 @@ subroutine projectdata()
     hinv2 = 1. / h2
     hinv3 = hinv2 / hh
     !
-    dx = abs(xx - x_physical) 
-    dy = abs(yy - y_physical) 
-    if(dx .gt. box_2) then 
-      dx = box - dx 
-    endif 
-    if(dy .gt. box_2) then 
-      dy = box - dy 
-    endif 
-    b2 = dx**2 + dy**2 
+    dx = abs(xx - x_physical)
+    dy = abs(yy - y_physical)
+    if(dx .gt. box_2) then
+      dx = box - dx
+    endif
+    if(dy .gt. box_2) then
+      dy = box - dy
+    endif
+    b2 = dx**2 + dy**2
     b  = sqrt(b2)
     impactparameter = b
     !
@@ -1573,12 +1573,12 @@ subroutine projectdata()
         ! Ionization Fraction         =  X_ion                     =  N_ion / N_element
         ! ParticleNeutralHFraction    =  X_H1 + X_Hmol             =  (N_H1 + 2*N_Hmol) / N_H
         ! ParticleMolecularHFraction  =  X_Hmol / (X_H1 + X_Hmol)  =  2*N_Hmol / (N_H1 + 2*N_Hmol)
-        ! 
+        !
         ! Therefore:
-        ! 
+        !
         ! X_H1    =  N_H1 / N_H    =  ParticleNeutralHFraction * (1 - ParticleMolecularHFraction)
         ! X_Hmol  =  N_Hmol / N_H  =  ParticleNeutralHFraction * ParticleMolecularHFraction
-        ! 
+        !
         ! subtract_Hmol = F  ->  X_Si2 = X_H1 + X_Hmol
         ! subtract_Hmol = T  ->  X_Si2 = X_H1
         !
@@ -1626,7 +1626,7 @@ subroutine projectdata()
             if(si2_index .gt. 0) &
               ionfrac(si2_index) = ParticleNeutralHFraction(i)
           endif
-        endif        
+        endif
         !
         if(ionfracone) then
           totnr_ion(:) = MassFractions(ion_elnr(:),i) * Mass(i) / ElementAtomicMass(ion_elnr(:)) ! [Msun/g]
@@ -1699,7 +1699,7 @@ subroutine projectdata()
                     kernel_factor = kernel_factor - ( Q2(ztrans,b,hh) - Q2(-ztrans,b,hh) )
                     kernel_factor = kernel_factor + ( Q1(ztrans,b,hh) - Q1(-ztrans,b,hh) )
                   endif
-                else 
+                else
                   ! one inner one outer kernel limit
                   if (zf .ge. ztrans) then
                     kernel_factor = Q2(zf,b,hh) - Q2(ztrans,b,hh)
@@ -1747,10 +1747,10 @@ subroutine projectdata()
             ! SPH estimates of A*rho, but we divide through by rho on the
             ! next loop.  This ensures that we explicitly conserve mass.
             n_ion(:,j)     = n_ion(:,j)     + kernel_factor * totnr_ion(:)
-            veloc_ion(:,j) = veloc_ion(:,j) + kernel_factor * totnr_ion(:) * vr 
+            veloc_ion(:,j) = veloc_ion(:,j) + kernel_factor * totnr_ion(:) * vr
             temp_ion(:,j)  = temp_ion(:,j)  + kernel_factor * totnr_ion(:) * ParticleTemperature(i)
             ! Particle Density n_H = cgs, rescaled for long spectra -> Particle cgs rho
-            rho_ion(:,j)   = rho_ion(:,j)   + kernel_factor * totnr_ion(:) * Density * proton_mass / MassFractions(H_index,i) 
+            rho_ion(:,j)   = rho_ion(:,j)   + kernel_factor * totnr_ion(:) * Density * proton_mass / MassFractions(H_index,i)
             ! .... weighted by mass
             rho_tot(j)     = rho_tot(j)     + kernel_factor * Mass(i)
             veloc_tot(j)   = veloc_tot(j)   + kernel_factor * Mass(i) * vr
@@ -1759,25 +1759,25 @@ subroutine projectdata()
             !
           endif ! kernel factor > 0
         enddo ! loop over contributing vertices
-        !      
+        !
     endif ! b le hh
     !
   enddo particle_loop
   !
   ! Mass was computed in M_sun (was used to compute particle nr),
   ! distance was in proper Mpc, conversion factor to n (cm^-3) is
-  ! thus: 
-  DensCon = Msun / Mpc**3 
+  ! thus:
+  DensCon = Msun / Mpc**3
   ! Rescale density from sim redshift to current z using densscale.
   DensCon = DensCon * densscale
   !
   do ii = 1, nion
     do i = 1, nveloc
-      if (n_ion(ii,i) .gt. 0.) then 
+      if (n_ion(ii,i) .gt. 0.) then
         veloc_ion(ii,i) = veloc_ion(ii,i) / n_ion(ii,i)
         temp_ion(ii,i)  = temp_ion(ii,i) / n_ion(ii,i)
         ! rho_ion was already cgs -> overdensity (right scaling per output time for long spectra)
-        ! rhocb is at snapshot expansion factor, but densities are rescaled to acurrent 
+        ! rhocb is at snapshot expansion factor, but densities are rescaled to acurrent
         ! -> rescale normalizing rhocb same way
         rho_ion(ii,i)   = rho_ion(ii,i) / n_ion(ii,i) / (rhocb * densscale)
       endif
@@ -1803,7 +1803,7 @@ function Q1(z,b,h)
   implicit none
   real(kind=doubleR), intent(in) :: z,b,h
   real(kind=doubleR) :: q, b_h, z_h
-  real(kind=doubleR) :: Q1 
+  real(kind=doubleR) :: Q1
   !
   q = sqrt(z**2+b**2) / h
   b_h  = b / h
@@ -1864,7 +1864,7 @@ subroutine makespectra()
   !
   boxkms = BoxSize / HubbleParam * acurrent * CurrentHubbleCt
   dvbin = boxkms / dble(nveloc)   ! bin size (km/s)
-  dzbin = BoxSize / HubbleParam * acurrent * Mpc / dble(nveloc) ! bin size (physical cm)      
+  dzbin = BoxSize / HubbleParam * acurrent * Mpc / dble(nveloc) ! bin size (physical cm)
 
 #ifdef HUBBLE
   boxkms = boxkms * HUBBLE
@@ -1936,11 +1936,11 @@ subroutine computespectrum(nveloc,ion,vhubble,rho_tot,cdens,vpecul,nion,temperat
   !
   integer(kind=singleI), intent(in) :: nveloc, ion
   real(kind=doubleR), intent(in)    :: vhubble(nveloc),rho_tot(nveloc),cdens(nveloc), &
-       vpecul(nveloc),nion(nveloc),temperature(nveloc),turbulence(nveloc) 
+       vpecul(nveloc),nion(nveloc),temperature(nveloc),turbulence(nveloc)
   real(kind=doubleR), intent(out)   :: tau(nveloc), rhow(nveloc), tempw(nveloc), &
        velocw(nveloc), nionw(nveloc)
   !
-  ! local variabales  
+  ! local variabales
   real(kind=doubleR) :: lambda0, fvalue,mass
   !
   !
@@ -1967,7 +1967,7 @@ subroutine computespectrum(nveloc,ion,vhubble,rho_tot,cdens,vpecul,nion,temperat
   real(kind=doubleR) :: dvbin_inv, taumin, bpar, bpar_inv
   real(kind=doubleR) :: tauc, slim, vz, vdiff, vpar, dtau, off
   real(kind=doubleR) :: tauint, truetauint
-  real(kind=doubleR) :: taufact, taufactor, vdiff0, vdiff1, vpar0, vpar1 
+  real(kind=doubleR) :: taufact, taufactor, vdiff0, vdiff1, vpar0, vpar1
   real(kind=doubleR) :: erf, derf, erfvmax2
   !
   ! parameters of this transitions
@@ -1984,17 +1984,17 @@ subroutine computespectrum(nveloc,ion,vhubble,rho_tot,cdens,vpecul,nion,temperat
     ! We additionally make the assumption that T_S = T_K
     !
     cfact = 0.076 * (1000.0)**1.5 / 1e21 ! cm^3/s
-    taufact = sqrt(pi) * cfact / 2. ! cm^3/s	
+    taufact = sqrt(pi) * cfact / 2. ! cm^3/s
   else !not 21 cm emission
     sigma_0 = sqrt(3.*Pi*ThomsonCross/8.) * 1.e-8 * lambda0 * fvalue
     cfact = sigma_0 * LightSpeed / sqrt(pi) ! cm^3/s
     taufact = sigma_0 * LightSpeed / 2. ! cm^3/s
   endif
   !
-  tfact = 2.0 * Boltz / mass ! erg/K/g	
+  tfact = 2.0 * Boltz / mass ! erg/K/g
   !
   ! note that v = [j-1,j>*dvbin is assigned to index j = 1,2,..,nveloc
-  ! --> vmax = nveloc * dvbin 
+  ! --> vmax = nveloc * dvbin
   !
   if (vhubble(1) .ne. 0.) stop 'ERROR: vhubble(1) must be zero'
   !
@@ -2010,7 +2010,7 @@ subroutine computespectrum(nveloc,ion,vhubble,rho_tot,cdens,vpecul,nion,temperat
   !
   nveloc10 = 10 * nveloc
   !
-  if (lambda0 .gt. 1.001 * lyalpha) then 
+  if (lambda0 .gt. 1.001 * ) then
     minbother = minbother_red
   else
     minbother = minbother_blue
@@ -2024,7 +2024,7 @@ subroutine computespectrum(nveloc,ion,vhubble,rho_tot,cdens,vpecul,nion,temperat
   nionw = 0.d0
   rhow  = 0.d0
   tempw = 0.d0
-  !  
+  !
   do i = 1,nveloc
     if(cdens(i) .gt. 0) then
       !
@@ -2041,9 +2041,9 @@ subroutine computespectrum(nveloc,ion,vhubble,rho_tot,cdens,vpecul,nion,temperat
         taufactor = taufactor / temperature(i)**1.5 / bpar_inv
       endif
       !
-      if (tauc .ge. taumin) then 
+      if (tauc .ge. taumin) then
         !
-        !     Integrate out to tau = taumin, 
+        !     Integrate out to tau = taumin,
         !     v/b (tau = taumin) = sqrt(log(tauc/taumin))
         slim = int(sqrt(log(tauc/taumin)))+1
         !
@@ -2052,7 +2052,7 @@ subroutine computespectrum(nveloc,ion,vhubble,rho_tot,cdens,vpecul,nion,temperat
         if (bpar .le. 3.*vpixsizekms .and.  &
           .not. integrate_thermprof_exactly) then
           write(*,'("bpar =< 3*vpixsizekms",f12.5,f12.5)')  &
-            bpar, vpixsizekms 
+            bpar, vpixsizekms
           write(*,'("Please decrease vpixsizekms in spec_wizard_modules.F90 (spectra),")')
           write(*,'("or integrate thermal profiles exactly.")')
           stop
@@ -2064,7 +2064,7 @@ subroutine computespectrum(nveloc,ion,vhubble,rho_tot,cdens,vpecul,nion,temperat
         !     compute velocity bin to assign to
         !     note that v = [j-1,j>*dvbin is assigned to index j = 1,2,..,nveloc
         !     --> center of bin is at velocity (j-0.5)*dvbin
-        iveloc = vz * dvbin_inv + 1 
+        iveloc = vz * dvbin_inv + 1
         !
         !     resolved lines
         if (.not. limsigma) then
@@ -2079,18 +2079,18 @@ subroutine computespectrum(nveloc,ion,vhubble,rho_tot,cdens,vpecul,nion,temperat
               if (vdiff0 .gt. vmax2) vdiff0 = vdiff0 - vmax
               if (vdiff0 .lt. -vmax2) vdiff0 = vdiff0 + vmax
               !     velocity off-set in units of Doppler parameter :
-              vpar1 = vdiff1 * bpar_inv 
-              vpar0 = vdiff0 * bpar_inv 
+              vpar1 = vdiff1 * bpar_inv
+              vpar0 = vdiff0 * bpar_inv
               derf = erf(vpar1) - erf(vpar0)
               !     correct case for which wrap around changes order
               if (vpar0 .gt. vpar1) derf = 2.*erfvmax2 + derf
               dtau = taufactor * derf
             else
               !     velocity offset from line centre in km/s :
-              vdiff = abs(dble(j-0.5) * dvbin - vz) 
+              vdiff = abs(dble(j-0.5) * dvbin - vz)
               if (vdiff .gt. vmax2) vdiff = vmax - vdiff
               !     velocity off-set in units of Doppler parameter :
-              vpar = vdiff * bpar_inv 
+              vpar = vdiff * bpar_inv
               dtau = tauc * exp(-vpar**2)
               !     integrate tau(v), used to check resolution
               tauint = tauint + dtau*dvbin
@@ -2099,10 +2099,10 @@ subroutine computespectrum(nveloc,ion,vhubble,rho_tot,cdens,vpecul,nion,temperat
             !
             !  optical depth weighted values
             normw(j) = normw(j) + dtau
-            velocw(j) = velocw(j) + dtau * vpecul(i) 
+            velocw(j) = velocw(j) + dtau * vpecul(i)
             nionw(j) = nionw(j) + dtau * nion(i)
             rhow(j)  = rhow(j)  + dtau * rho_tot(i)
-            tempw(j) = tempw(j) + dtau * temperature(i) 
+            tempw(j) = tempw(j) + dtau * temperature(i)
             !
           enddo
         else
@@ -2117,17 +2117,17 @@ subroutine computespectrum(nveloc,ion,vhubble,rho_tot,cdens,vpecul,nion,temperat
               if (vdiff0 .gt. vmax2) vdiff0 = vdiff0 - vmax
               if (vdiff0 .lt. -vmax2) vdiff0 = vdiff0 + vmax
               !     velocity off-set in units of Doppler parameter :
-              vpar1 = vdiff1 * bpar_inv 
-              vpar0 = vdiff0 * bpar_inv 
+              vpar1 = vdiff1 * bpar_inv
+              vpar0 = vdiff0 * bpar_inv
               derf = erf(vpar1) - erf(vpar0)
               !     correct case for which wrap around changes order
               if (vpar0 .gt. vpar1) derf = 2.*erfvmax2 + derf
               dtau = taufactor * derf
             else
-              vdiff = abs(dble(j-0.5) * dvbin - vz) 
+              vdiff = abs(dble(j-0.5) * dvbin - vz)
               if (vdiff .gt. vmax2) vdiff = vmax - vdiff
               !     velocity off-set in units of Doppler parameter :
-              vpar = vdiff * bpar_inv 
+              vpar = vdiff * bpar_inv
               dtau = tauc * exp(-vpar**2)
               tauint = tauint + dtau*dvbin
             endif
@@ -2136,10 +2136,10 @@ subroutine computespectrum(nveloc,ion,vhubble,rho_tot,cdens,vpecul,nion,temperat
             !
             !     optical depth weighted values
             normw(ispec) = normw(ispec) + dtau
-            velocw(ispec)= velocw(ispec) + dtau * vpecul(ispec) 
+            velocw(ispec)= velocw(ispec) + dtau * vpecul(ispec)
             nionw(ispec) = nionw(ispec) + dtau *  nion(i)
             rhow(ispec)  = rhow(ispec)  + dtau * rho_tot(i)
-            tempw(ispec) = tempw(ispec) + dtau * temperature(i) 
+            tempw(ispec) = tempw(ispec) + dtau * temperature(i)
           enddo
         endif               ! limsigma
         !     theoretical integral of tau(v) over full thermal profile
@@ -2307,9 +2307,9 @@ subroutine update_short_spectrum(particlefile, nlos)
 #ifdef MPI
   call mpi_reduce(ncontribute, ncontribute_global, nlos, MPI_INTEGER, MPI_SUM, 0, MPI_COMM_WORLD, MPI_err)
 #else
-  ncontribute_global = ncontribute 
+  ncontribute_global = ncontribute
 #endif
-  
+
   ! check for existence of output file
   if(MyPE == 0) then
      inquire(file=SpectrumFile,exist=file_exists)
@@ -2437,7 +2437,7 @@ subroutine write_short_spectrum(particlefile, los_number, nlos)
       ! Real space, n_ion.-weighted overdensity
       VarName = trim(ElementGroup)//'OverDensity'
       call hdf5_write_data(file_handle,trim(VarName),rho_ion(ion,:), gzip=16) !Old version: n_ion(ion,:)*ion_mass(ion)/rhocb
-      ! Real space, n_ion-weighted temperature. 
+      ! Real space, n_ion-weighted temperature.
       VarName = trim(ElementGroup)//'Temperature_K'
       call hdf5_write_data(file_handle, trim(VarName),temp_ion(ion,:), gzip=16)
     enddo
@@ -2516,7 +2516,7 @@ subroutine convolve_short_spectrum()
   ! Compute sigma in units of pixels
   b = sigmakms / vpixsize
   !
-  ! For convolution with instrumental profile we need to Fourier 
+  ! For convolution with instrumental profile we need to Fourier
   ! transform, we thus need to increase the array so that it is a power of 2.
   nvpix   = int(2**(aint(log(dble(nveloc))/log(2.)) + 1))
   !
@@ -2524,7 +2524,7 @@ subroutine convolve_short_spectrum()
   allocate(gauss(nvpix))
   norm = 1d0 / (2d0 * b * b)
   do i = 0, nvpix-1
-    if (i .le. nvpix-1) then 
+    if (i .le. nvpix-1) then
       if (i .le. nvpix/2) then
         j = i
       else
@@ -2607,7 +2607,7 @@ subroutine allocate_spectra_long()
   rho_long(:)               = 0.0
   temp_long(:)              = 0.0
   met_long(:)               = 0.0
-  veloc_long(:)             = 0.0        
+  veloc_long(:)             = 0.0
   flux(:)                   = 0.0
   flux_convolved(:)         = 0.0
   !
@@ -2632,15 +2632,15 @@ subroutine insertspectra(zcurrent_next)
   character(len=120) :: outfile
   logical :: loginterpolate
   logical, parameter :: is_positive = .true.
-  !  
+  !
   CurrentHubbleCt = 100. * HubbleParam *  &
        sqrt(1. + omega0*(1./acurrent-1.) + OmegaLambda* &
        (acurrent**2-1.)) /acurrent
-  boxkms = BoxSize / HubbleParam * acurrent * CurrentHubbleCt     
+  boxkms = BoxSize / HubbleParam * acurrent * CurrentHubbleCt
 
   !
   ! lambda = lambda0 (1+zcurent) log_e(vhubble/c)
-  
+
   ! Compute v/c of simulation pixels when mapped onto long
   ! spectrum. Actually, this is NOT v/c, but v/c -
   ! ln(lambda_0). The rest wavelength is added later!
@@ -2649,7 +2649,7 @@ subroutine insertspectra(zcurrent_next)
      voc(i) = dble(i-1) * pixvoc
   enddo
   voc = voc + log(1.+zcurrent)
-  
+
   ! Next redshift; exp: limit case, factors of (1 + Delta v / c) for each pixel
   ! lim n-> inf (1 + x/n)^n = exp(x)
   zcurrent_next = (1.d0+zcurrent) *  exp(voc(nveloc) - voc(1) + pixvoc) - 1.
@@ -2657,7 +2657,7 @@ subroutine insertspectra(zcurrent_next)
   !
   if(docycling) call shift () ! cyclically shift spectrum to have minimum HI optical depth at start/end
 
-  ! spline interpolate real-space density, density weighted temperature 
+  ! spline interpolate real-space density, density weighted temperature
   ! voc is log(1 + z)
   vocsim = voc
   minvoc = vocsim(1)
@@ -2666,17 +2666,17 @@ subroutine insertspectra(zcurrent_next)
   ! debug info real-space values
   !write(*,*)'Insertspectra inputs real space'
   !write(*,'("minvoc: ",f7.4," maxvoc: ", f7.4)') minvoc, maxvoc
-  !write(*,'("vocsim: ",f7.4,", ", f7.4, ", ", f7.4, " ... ", f7.4)') & 
+  !write(*,'("vocsim: ",f7.4,", ", f7.4, ", ", f7.4, " ... ", f7.4)') &
   !        vocsim(1), vocsim(2), vocsim(3), vocsim(nveloc)
-  !write(*,'("voverc_realspace: ",f7.4,", ", f7.4, ", ",f7.4," ... ",f7.4)') & 
+  !write(*,'("voverc_realspace: ",f7.4,", ", f7.4, ", ",f7.4," ... ",f7.4)') &
   !        voverc_realspace(1), voverc_realspace(2), voverc_realspace(3), voverc_realspace(nppix)
-                  
+
   if(output_realspacemassweighted_values)then
      call spline_interpolate(&
           nveloc,vocsim,rho_tot &
           ,minvoc,maxvoc,1,small_rho &
           ,nppix,voverc_realspace,rho_long,is_positive=.true.)
-     
+
      call spline_interpolate(&
           nveloc,vocsim,temp_tot &
           ,minvoc,maxvoc,1,small_temp &
@@ -2697,7 +2697,7 @@ subroutine insertspectra(zcurrent_next)
              nveloc,vocsim,n_ion(ion,:) &
              ,minvoc,maxvoc,1,small_rho &
              ,nppix,voverc_realspace,n_ion_long(ion,:),is_positive=.true.)
-        
+
         call spline_interpolate(&
              nveloc,vocsim,temp_ion(ion,:) &
              ,minvoc,maxvoc,1,small_temp &
@@ -2719,7 +2719,7 @@ subroutine insertspectra(zcurrent_next)
      lines: do j = 1, nlines(ion)
         logl   = log(lambda_rest(ion,j)/minlambda)
         minvoc = min(voc(1)      ,log(1.+zqso))+ logl
-        maxvoc = min(voc(nveloc) ,log(1.+zqso))+ logl        
+        maxvoc = min(voc(nveloc) ,log(1.+zqso))+ logl
         !
         ! redshift-space ion-weighted density, temperature and velocity
         if (output_zspaceopticaldepthweighted_values .and. (j .eq. 1)) then
@@ -2736,8 +2736,8 @@ subroutine insertspectra(zcurrent_next)
                 nveloc,vocsim,veloc_z_ion(ion,:)&
                 ,minvoc,maxvoc,ion,small_velocity&
                 ,nvpix,voverc,veloc_z_ion_long(ion,:),is_positive=.false.)
-        endif 
-        if (minvoc .le. voverc(nvpix) .and.  maxvoc .ge. voverc(1)) then 
+        endif
+        if (minvoc .le. voverc(nvpix) .and.  maxvoc .ge. voverc(1)) then
            if (lambda_rest(ion,j) .gt. 1.001 * lyalpha) then
               minbother = minbother_red
            else
@@ -2749,13 +2749,13 @@ subroutine insertspectra(zcurrent_next)
            tau_limit: if (taumax(ion) * taufactor .gt. minbother) then
               vocsim(:)   = voc(:) + logl ! pixel velocity of this ion
 
-              ! optical depth              
+              ! optical depth
               call spline_interpolate(&
                    nveloc,vocsim,tau_ion(ion,:)*taufactor &
                    ,minvoc,maxvoc,ion,minbother &
                    ,nvpix,voverc,tau_long(ion,:) &
                    ,loginterpolate=.true.,is_positive=.true.)
-              
+
               !If this is the strongest transition put it into tau_long_strongest
               if (j .eq. 1) then
                   call spline_interpolate(&
@@ -2886,7 +2886,7 @@ subroutine write_long_spectrum()
   ! output info of small spectra used
   GroupName = trim(ThisSpectrum)//'/ShortSpectraInfo'
   call hdf5_create_group(file_handle, GroupName)
-  VarName = trim(GroupName)//'/RandomSeeds'  
+  VarName = trim(GroupName)//'/RandomSeeds'
   call hdf5_write_data(file_handle, VarName, seed)
   VarName = trim(GroupName)//'/NumberOfShortSpectra'
   call hdf5_write_data(file_handle, trim(VarName), nsimfile_used)
@@ -3014,7 +3014,7 @@ subroutine rebin_spectrum
       veloc_z_ion_long(:,:) = veloc_z_ion_long(:,:) * tau_long_strongest(:,:)
       do ion=1,nion
          call rebin(temp_z_ion_long(ion,:),binned_temp_z_ion(ion,:))
-         call rebin(rho_z_ion_long(ion,:),binned_rho_z_ion(ion,:))    
+         call rebin(rho_z_ion_long(ion,:),binned_rho_z_ion(ion,:))
          call rebin(veloc_z_ion_long(ion,:),binned_veloc_z_ion(ion,:))
       enddo
   endif
@@ -3090,7 +3090,7 @@ subroutine convolve_long_spectrum()
      allocate(gauss(nvpix))
      norm = 1d0 / (2d0 * b * b)
      do i = 0, nvpix-1
-        if (i .le. nvpix-1) then 
+        if (i .le. nvpix-1) then
            if (i .le. nvpix/2) then
               j = i
            else
@@ -3155,11 +3155,11 @@ subroutine add_noise()
   integer(kind=singleI)  :: i, il1, il2, if1, if2, i11, i12, i21, i22
   real(kind=doubleR)     :: dl1, dl2, df1, df2, sigma
   !
-  !write(*,*) 'Im here in add noise subroutine' 
-  if (verbose .and. MyPE == 0) then 
+  !write(*,*) 'Im here in add noise subroutine'
+  if (verbose .and. MyPE == 0) then
     if (use_noise_file) then
       write(*,*)"Adding noise from file ",trim(noisefile)
-    else 
+    else
       write(*,*)"Adding noise with S/N = minnoise + (1/sigtonoise - minnoise) * flux,"
       write(*,*)"where minnoise = ",minnoise," and sigtonoise = ",sigtonoise
     endif
@@ -3168,30 +3168,30 @@ subroutine add_noise()
   do i = 1, n_binned_flux
     ! Interpolate noise level from file.
     ! Bilinear interpolation (noise is binned in binned_lambda and binned_flux).
-    if (use_noise_file) then 
+    if (use_noise_file) then
       il2 = 2
       do while (binned_lambda(i) .gt. n_lambda(il2))
         il2 = il2 + 1
       enddo
       il1 = il2 - 1
       dl1 = (n_lambda(il2) - binned_lambda(i)) / (n_lambda(il2) - n_lambda(il1))
-      dl2 = 1. - dl1   
+      dl2 = 1. - dl1
       if2 = 2
       do while (binned_flux(i) .gt. n_flux(if2))
         if2 = if2 + 1
       enddo
       if1 = if2 - 1
       df1 = (n_flux(if2) - binned_flux(i)) / (n_flux(if2) - n_flux(if1))
-      df2 = 1. - df1   
+      df2 = 1. - df1
       sigma = dl1*df1*n_sigma(il1,if1) + dl2*df1*n_sigma(il2,if1) + &
-        dl1*df2*n_sigma(il1,if2) + dl2*df2*n_sigma(il2,if2)   
+        dl1*df2*n_sigma(il1,if2) + dl2*df2*n_sigma(il2,if2)
     else
       ! Use noise independent of wavelength.
       sigma = minnoise + (1d0 - minnoise*sigtonoise) /  sigtonoise * binned_flux(i)
     endif
     ! Actual noise realisation requires multiplying with Gaussian deviate with mean 0 and dispersion=1
     ! Array binned_noise stores sigma of noise, not actual noise
-    ! Dispersion of Gaussian noise	
+    ! Dispersion of Gaussian noise
     binned_noise_sigma(i)  = sigma
     ! Gaussian deviate with mean 0 and dispersion 1
     binned_noise_random(i) = random(ran_noise)
@@ -3232,7 +3232,7 @@ subroutine read_header(file_handle)
   call hdf5_read_attribute(file_handle,'Header/OmegaBaryon',OmegaBaryon)
   call hdf5_read_attribute(file_handle,'Header/OmegaLambda',OmegaLambda)
   call hdf5_read_attribute(file_handle,'Header/HubbleParam',HubbleParam)
-#ifdef EAGLE
+#if defined (EAGLE) || defined(AURORA)
   Time =-1.
 #else
   call hdf5_read_attribute(file_handle,'Header/Time_GYR',Time)
@@ -3244,7 +3244,7 @@ subroutine read_header(file_handle)
     los_this_file = -1
   endif
   !
-  rhoc  = 3 * (H0*HubbleParam)**2 / (8. * pi * G) ! Critical density g/cm^3 
+  rhoc  = 3 * (H0*HubbleParam)**2 / (8. * pi * G) ! Critical density g/cm^3
   rhocb = rhoc / ExpansionFactor**3 * OmegaBaryon
   !
 end subroutine read_header
@@ -3254,7 +3254,7 @@ subroutine check_header() ! check whether parameters are realistic
   use header
   implicit none
   !
-  if(BoxSize .LT. 1e-5) then 
+  if(BoxSize .LT. 1e-5) then
     write (*,*) ' suspicious box size: ',BoxSize
     stop
   endif
@@ -3307,7 +3307,7 @@ subroutine write_header(file_handle)
   !
 end subroutine write_header
 
-#ifdef EAGLE
+#if defined (EAGLE) || defined(AURORA)
 subroutine read_parameters(file_handle)
   use numbers
   use runtime
@@ -3409,7 +3409,7 @@ subroutine read_parameters(file_handle)
     call hdf5_read_attribute(file_handle,trim(GroupName)//'/SF_THRESH_MetDepFiducialZ',SF_THRESH_MetDepFiducialZ)
     call hdf5_read_attribute(file_handle,trim(GroupName)//'/SF_THRESH_MetDepMaxPhysDens_HpCM3',SF_THRESH_MetDepMaxPhysDens_HpCM3)
   endif
-  call hdf5_read_attribute(file_handle,trim(GroupName)//'/SF_THRESH_MaxTemp_K',SF_THRESH_MaxTemp_K)         
+  call hdf5_read_attribute(file_handle,trim(GroupName)//'/SF_THRESH_MaxTemp_K',SF_THRESH_MaxTemp_K)
   call hdf5_read_attribute(file_handle,trim(GroupName)//'/SF_SchmidtLawCoeff_MSUNpYRpKPC2',SF_SchmidtLawCoeff_MSUNpYRpKPC2)
   call hdf5_read_attribute(file_handle,trim(GroupName)//'/SF_SchmidtLawExponent',SF_SchmidtLawExponent)
   call hdf5_read_attribute(file_handle,trim(GroupName)//'/SF_SchmidtLawCoeff_GpSpCM2',SF_SchmidtLawCoeff_GpSpCM2)
@@ -3456,7 +3456,7 @@ subroutine read_parameters(file_handle)
   call hdf5_read_attribute(file_handle,trim(GroupName)//'/ErrTolTheta',ErrTolTheta)
   call hdf5_read_attribute(file_handle,trim(GroupName)//'/ErrTolForceAcc',ErrTolForceAcc)
   call hdf5_read_attribute(file_handle,trim(GroupName)//'/TreeDomainUpdateFrequency',TreeDomainUpdateFrequency)
-  call hdf5_read_attribute(file_handle,trim(GroupName)//'/ArtBulkViscConst',ArtBulkViscConst)                         
+  call hdf5_read_attribute(file_handle,trim(GroupName)//'/ArtBulkViscConst',ArtBulkViscConst)
   call hdf5_read_attribute(file_handle,trim(GroupName)//'/InitGasU_ERG',InitGasU_ERG)
   call hdf5_read_attribute(file_handle,trim(GroupName)//'/MinGasU_ERG', MinGasU_ERG)
   call hdf5_read_attribute(file_handle,trim(GroupName)//'/CourantFac',CourantFac)
@@ -3507,7 +3507,7 @@ subroutine write_parameters(file_handle)
     call hdf5_write_attribute(file_handle,trim(GroupName)//'/SF_THRESH_MetDepFiducialZ',SF_THRESH_MetDepFiducialZ)
     call hdf5_write_attribute(file_handle,trim(GroupName)//'/SF_THRESH_MetDepMaxPhysDens_HpCM3',SF_THRESH_MetDepMaxPhysDens_HpCM3)
   endif
-  call hdf5_write_attribute(file_handle,trim(GroupName)//'/SF_THRESH_MaxTemp_K',SF_THRESH_MaxTemp_K)         
+  call hdf5_write_attribute(file_handle,trim(GroupName)//'/SF_THRESH_MaxTemp_K',SF_THRESH_MaxTemp_K)
   call hdf5_write_attribute(file_handle,trim(GroupName)//'/SF_SchmidtLawCoeff_MSUNpYRpKPC2',SF_SchmidtLawCoeff_MSUNpYRpKPC2)
   call hdf5_write_attribute(file_handle,trim(GroupName)//'/SF_SchmidtLawExponent',SF_SchmidtLawExponent)
   call hdf5_write_attribute(file_handle,trim(GroupName)//'/SF_SchmidtLawCoeff_GpSpCM2',SF_SchmidtLawCoeff_GpSpCM2)
@@ -3653,7 +3653,7 @@ subroutine write_specwizard_runtime_parameters(file_handle)
   implicit none
   !
   integer, intent(in):: file_handle
-  character(len=120) :: GroupName 
+  character(len=120) :: GroupName
   integer(kind=singleI)           :: number_of_transitions, line, count, ion
   character(len=10), allocatable  :: all_ions(:)
   real(kind=doubleR), allocatable :: all_lambda_rest(:), all_fosc(:), all_ion_mass(:)
@@ -3999,8 +3999,8 @@ subroutine load_noise
   allocate(n_flux(n_nf))
   allocate(n_sigma(n_nl,n_nf))
   !
-  call hdf5_read_data(file_handle,'NormalizedFlux',n_flux)  
-  call hdf5_read_data(file_handle,'Wavelength_Angstrom',n_lambda)  
+  call hdf5_read_data(file_handle,'NormalizedFlux',n_flux)
+  call hdf5_read_data(file_handle,'Wavelength_Angstrom',n_lambda)
   call hdf5_read_data(file_handle,'NormalizedNoise',n_sigma)
   call hdf5_close_file(file_handle)
   !
@@ -4010,7 +4010,7 @@ end subroutine load_noise
 
 subroutine readdata_owls(filename,los_number)
   !
-  ! Read in data of OWLS simulation (hdf5): 
+  ! Read in data of OWLS simulation (hdf5):
   ! modified -> read EAGLE or OWLS data from LOS files
   !
   use numbers
@@ -4072,7 +4072,7 @@ subroutine readdata_owls(filename,los_number)
     ! determine total number of Gas particles
     do files=0, NFiles-1
       write(FileNumber,'(i3)') files
-      longfile = trim(basefile)//'.'//trim(adjustl(FileNumber))//'.los.hdf5'        
+      longfile = trim(basefile)//'.'//trim(adjustl(FileNumber))//'.los.hdf5'
       write (LosNumber,'(I4)') abs(los_number)
       LOSName = "LOS"//trim(adjustl(LosNumber))
       call hdf5_open_file(file_handle, longfile, readonly=.true.)
@@ -4081,9 +4081,9 @@ subroutine readdata_owls(filename,los_number)
       call hdf5_read_attribute(file_handle, VarName, NPart_This_sight)
       !
       if(files == 1) then
-        call hdf5_read_attribute(file_handle,'/Constants/CM_PER_MPC',cm_per_mpc) 
-        call hdf5_read_attribute(file_handle,'/Constants/PROTONMASS',proton_mass) 
-        call hdf5_read_attribute(file_handle,'/Constants/SOLAR_MASS',solar_mass) 
+        call hdf5_read_attribute(file_handle,'/Constants/CM_PER_MPC',cm_per_mpc)
+        call hdf5_read_attribute(file_handle,'/Constants/PROTONMASS',proton_mass)
+        call hdf5_read_attribute(file_handle,'/Constants/SOLAR_MASS',solar_mass)
         call hdf5_read_attribute(file_handle,'/Header/ExpansionFactor', ExpansionFactor)
         call hdf5_read_attribute(file_handle,'/Header/Redshift', Redshift)
       endif
@@ -4102,16 +4102,16 @@ subroutine readdata_owls(filename,los_number)
       ! read sightline # los_number
       VarName = trim(LosName)//'/Number_of_part_this_los'
       call hdf5_read_attribute(file_handle, VarName, NGas)
-      call hdf5_read_attribute(file_handle,'/Constants/CM_PER_MPC',cm_per_mpc) 
-      call hdf5_read_attribute(file_handle,'/Constants/PROTONMASS',proton_mass) 
-      call hdf5_read_attribute(file_handle,'/Constants/SOLAR_MASS',solar_mass) 
+      call hdf5_read_attribute(file_handle,'/Constants/CM_PER_MPC',cm_per_mpc)
+      call hdf5_read_attribute(file_handle,'/Constants/PROTONMASS',proton_mass)
+      call hdf5_read_attribute(file_handle,'/Constants/SOLAR_MASS',solar_mass)
       call hdf5_read_attribute(file_handle,'/Header/ExpansionFactor', ExpansionFactor)
       call hdf5_read_attribute(file_handle,'/Header/Redshift', Redshift)
       NPart_This_sight = NGas
       call allocate_particledata()
     else
       write(FileNumber,'(i3)') files
-      longfile = trim(basefile)//'.'//trim(adjustl(FileNumber))//'.los.hdf5'        
+      longfile = trim(basefile)//'.'//trim(adjustl(FileNumber))//'.los.hdf5'
       LOSName = "LOS"//trim(adjustl(LosNumber))
       call hdf5_open_file(file_handle, longfile, readonly=.true.)
       VarName = trim(LosName)//'/Npart_this_sight'
@@ -4176,7 +4176,7 @@ subroutine readdata_owls(filename,los_number)
       call hdf5_read_attribute(file_handle,VarName,Vel_cgs_unit)
       !
       ! Density
-      VarName = trim(LosName)//'/Density'        
+      VarName = trim(LosName)//'/Density'
       call hdf5_read_data(file_handle, VarName, ParticleDensity(NTotal+1:NTotal+NPart_This_sight))
       VarName = trim(LosName)//'/Density/h-scale-exponent'
       call hdf5_read_attribute(file_handle,VarName,Dens_h_exp)
@@ -4186,11 +4186,11 @@ subroutine readdata_owls(filename,los_number)
       call hdf5_read_attribute(file_handle,VarName,Dens_cgs_unit)
       !
       ! Star formation rate
-      VarName = trim(LosName)//'/StarFormationRate'        
+      VarName = trim(LosName)//'/StarFormationRate'
       call hdf5_read_data(file_handle,VarName,StarFormationRate(NTotal+1:NTotal+NPart_This_sight))
       !
       ! Same scalings as Coordinates
-      VarName = trim(LosName)//'/SmoothingLength'  
+      VarName = trim(LosName)//'/SmoothingLength'
       call hdf5_read_data(file_handle, VarName, ParticleSmoothingLength(NTotal+1:NTotal+NPart_This_sight))
       !
       ! Boundary type
@@ -4228,7 +4228,7 @@ subroutine readdata_owls(filename,los_number)
       endif
       if (requireH) then
         call hdf5_read_data(file_handle,trim(Varname)//'Hydrogen',&
-          MassFractions(H_index,NTotal+1:NTotal+NPart_This_sight))   
+          MassFractions(H_index,NTotal+1:NTotal+NPart_This_sight))
       endif
       if (requireHe) then
         call hdf5_read_data(file_handle,trim(Varname)//'Helium',&
@@ -4264,7 +4264,7 @@ subroutine readdata_owls(filename,los_number)
       endif
       !
       ! Metallicity
-      call hdf5_read_attribute(file_handle,'/Constants/Z_Solar', Z_solar)  ! assumed solar metallicity 
+      call hdf5_read_attribute(file_handle,'/Constants/Z_Solar', Z_solar)  ! assumed solar metallicity
       call hdf5_read_data(file_handle,trim(LosName)//'/Metallicity',Metallicity(NTotal+1:NTotal+NPart_This_sight))
       !
       ! Mass
@@ -4330,7 +4330,7 @@ subroutine readdata_owls(filename,los_number)
   BoxPhys              = BoxSize * Coordinates_conv
   ParticleSmoothingLength  = ParticleSmoothingLength * Coordinates_conv ! CAUTION specwizard neighbours within h, OLD version: 2*h
   !
-  Velocity_conv       = Vel_aexp_exp * log10(ExpansionFactor) + vel_h_exp * log10(HubbleParam) + log10(vel_cgs_unit) & 
+  Velocity_conv       = Vel_aexp_exp * log10(ExpansionFactor) + vel_h_exp * log10(HubbleParam) + log10(vel_cgs_unit) &
     - log10(1.d5) ! physical km/s
   Velocity_conv       = 10.d0**Velocity_conv
   Velocity            = Velocity * Velocity_conv
@@ -4354,7 +4354,7 @@ subroutine readdata_owls(filename,los_number)
   if(HubbleParam .eq. 0) call abortrun('HubbleParam = 0!')
   Temp_conv          = Temp_aexp_exp * log10(ExpansionFactor) + Temp_h_exp * log10(HubbleParam) + log10(Temp_cgs_unit) ! cgs
   Temp_Conv          = 10.d0**Temp_Conv
-  ParticleTemperature        = ParticleTemperature * Temp_Conv 
+  ParticleTemperature        = ParticleTemperature * Temp_Conv
   if(setmaxt4sfgas) then
     where(StarFormationRate .gt. 0) ParticleTemperature = 1.d4
   endif
@@ -4368,7 +4368,7 @@ subroutine readdata_owls(filename,los_number)
   endif
   !
   !
-  if (verbose .and. first_call .and. MyPE == 0) then 
+  if (verbose .and. first_call .and. MyPE == 0) then
     write(*,*) ' ++++++++++++ '
     write(*,*) 'Particle data read::'
     write(*,'("redshift      = ",f7.4)') Redshift
@@ -4398,7 +4398,7 @@ subroutine readdata_owls(filename,los_number)
   !
   !		 write(*,*) ib_t(1), ib_t(ib_nt), ib_d(1), ib_d(ib_nd)
   !
-  if (verbose .and. MyPE == 0) then 
+  if (verbose .and. MyPE == 0) then
     write(*,'("Redshift sim:    ",f11.4)')  Redshift
     write(*,'("# particles:     ",i11)')    Ngas
     write(*,'("# SF particles:	 ",i11)')   nsf
@@ -4437,7 +4437,7 @@ subroutine readdata_owls(filename,los_number)
       " (needed: ",f7.3,")")') ib_logd(nd), log10(dmax)
     write(*,'("Hit a key and then enter to coninue: ")')
     !				 read(*,*) dumbo
-    !				 stop 
+    !				 stop
   endif
 end subroutine readdata_owls
 
@@ -4492,7 +4492,7 @@ subroutine read_full_snapshot()
   type (eaglesnapshot) :: snapinfo
 #endif
 
-#ifdef EAGLE
+#if defined (EAGLE) || defined(AURORA)
   longfile = trim(datadir)//trim(snap_base)//'.hdf5'
 #else
   write (FileNumber,'(I3.3)') snap
@@ -4503,18 +4503,18 @@ subroutine read_full_snapshot()
   inquire(file=longfile,exist=single_file)
   if(.not. single_file)then
     ! multi-file format
-#ifdef EAGLE
+#if defined (EAGLE) || defined(AURORA)
 	if(aurora) then
 		basefile = trim(datadir)//trim(snap_base)
 	else
 		basefile = trim(datadir)//trim(snap_base)
-    endif    
+    endif
 #else
     basefile = trim(datadir)//'/snapshot_'//trim(FileNumber)//'/snap_'//trim(FileNumber)
 #endif
 	if(aurora) then														!andres
 		longfile = trim(basefile)//'.0.hdf5'
-	
+
 	else
 		longfile = trim(basefile)//'.0.hdf5'
 	endif
@@ -4546,13 +4546,13 @@ subroutine read_full_snapshot()
 
   ! read all variables
 #ifdef READREGION
-  longfile = trim(basefile)//'.0.hdf5'        
+  longfile = trim(basefile)//'.0.hdf5'
 
   ! read system of units
   call hdf5_open_file(file_handle, longfile, readonly=.true.)
-  call hdf5_read_attribute(file_handle,'/Constants/CM_PER_MPC',cm_per_mpc) 
-  call hdf5_read_attribute(file_handle,'/Constants/PROTONMASS',proton_mass) 
-  call hdf5_read_attribute(file_handle,'/Constants/SOLAR_MASS',solar_mass) 
+  call hdf5_read_attribute(file_handle,'/Constants/CM_PER_MPC',cm_per_mpc)
+  call hdf5_read_attribute(file_handle,'/Constants/PROTONMASS',proton_mass)
+  call hdf5_read_attribute(file_handle,'/Constants/SOLAR_MASS',solar_mass)
   call hdf5_read_attribute(file_handle,'/Header/ExpansionFactor', ExpansionFactor)
   call hdf5_read_attribute(file_handle,'/Header/Redshift', Redshift)
   call read_header(file_handle)
@@ -4571,14 +4571,14 @@ subroutine read_full_snapshot()
   call hdf5_read_attribute(file_handle,VarName,Vel_aexp_exp)
   VarName = trim('PartType0')//'/Velocity/CGSConversionFactor'
   call hdf5_read_attribute(file_handle,VarName,Vel_cgs_unit)
-  
+
   VarName = trim('PartType0')//'/Density/h-scale-exponent'
   call hdf5_read_attribute(file_handle,VarName,Dens_h_exp)
   VarName = trim('PartType0')//'/Density/aexp-scale-exponent'
   call hdf5_read_attribute(file_handle,VarName,Dens_aexp_exp)
   VarName = trim('PartType0')//'/Density/CGSConversionFactor'
   call hdf5_read_attribute(file_handle,VarName,Dens_cgs_unit)
-  
+
   if(use_urchin_temperature) then
      VarName = trim('PartType0')//'/Temperature/h-scale-exponent'
      call hdf5_read_attribute(urchin_file_handle,VarName,Temp_h_exp)
@@ -4594,19 +4594,19 @@ subroutine read_full_snapshot()
      VarName = trim('PartType0')//'/Temperature/CGSConversionFactor'
      call hdf5_read_attribute(file_handle,VarName,Temp_cgs_unit)
   endif
-  
+
   VarName = trim('PartType0')//'/Mass/h-scale-exponent'
   call hdf5_read_attribute(file_handle,VarName,Mass_h_exp)
   VarName = trim('PartType0')//'/Mass/aexp-scale-exponent'
   call hdf5_read_attribute(file_handle,VarName,Mass_aexp_exp)
   VarName = trim('PartType0')//'/Mass/CGSConversionFactor'
   call hdf5_read_attribute(file_handle,VarName,Mass_cgs_unit)
-  
-  call hdf5_read_attribute(file_handle,'/Constants/Z_Solar', Z_solar)  ! assumed solar metallicity 
+
+  call hdf5_read_attribute(file_handle,'/Constants/Z_Solar', Z_solar)  ! assumed solar metallicity
 
   call hdf5_close_file(file_handle)
 
-  
+
 
   ! define selection
   snapinfo = open_snapshot(longfile)
@@ -4690,7 +4690,7 @@ subroutine read_full_snapshot()
   if (requireMg) &
        np = read_dataset(snapinfo, 0, trim(VarName)//'Magnesium', MassFractions(Mg_index,:))
   if (requireN) &
-       np = read_dataset(snapinfo, 0, trim(VarName)//'Nitrogen', MassFractions(N_index,:))  
+       np = read_dataset(snapinfo, 0, trim(VarName)//'Nitrogen', MassFractions(N_index,:))
   if (requireNe) &
        np = read_dataset(snapinfo, 0, trim(VarName)//'Neon', MassFractions(Ne_index,:))
   if (requireO) &
@@ -4699,7 +4699,7 @@ subroutine read_full_snapshot()
   ! Metallicity
   if (MyPE == 0) &
        write (*,*) ' reading Z'
-  if(use_smoothed_abundance) then										!aurora does not have smoothed Metallicity 
+  if(use_smoothed_abundance) then										!aurora does not have smoothed Metallicity
      np =  read_dataset(snapinfo, 0, 'SmoothedMetallicity', Metallicity)
   else
      np =  read_dataset(snapinfo, 0, 'Metallicity', Metallicity)
@@ -4710,7 +4710,7 @@ subroutine read_full_snapshot()
   np =  read_dataset(snapinfo, 0, 'Mass', Mass)
   if (MyPE == 0) &
        write (*,*) ' reading done'
-  
+
 
   call clear_selection(snapinfo)
   call close_snapshot(snapinfo)
@@ -4727,7 +4727,7 @@ subroutine read_full_snapshot()
         if(urchin) call hdf5_open_file(urchin_file_handle, urchin_longfile, readonly=.true.)
      else
         write(FileNumber,'(i3)') files
-        longfile = trim(basefile)//'.'//trim(adjustl(FileNumber))//'.hdf5'        
+        longfile = trim(basefile)//'.'//trim(adjustl(FileNumber))//'.hdf5'
         call hdf5_open_file(file_handle, longfile, readonly=.true.)
         if(urchin) then
           urchin_longfile = trim(urchin_basefile)//trim(adjustl(FileNumber))//'.hdf5'
@@ -4735,9 +4735,9 @@ subroutine read_full_snapshot()
         endif
      endif
      !
-     call hdf5_read_attribute(file_handle,'/Constants/CM_PER_MPC',cm_per_mpc) 
-     call hdf5_read_attribute(file_handle,'/Constants/PROTONMASS',proton_mass) 
-     call hdf5_read_attribute(file_handle,'/Constants/SOLAR_MASS',solar_mass) 
+     call hdf5_read_attribute(file_handle,'/Constants/CM_PER_MPC',cm_per_mpc)
+     call hdf5_read_attribute(file_handle,'/Constants/PROTONMASS',proton_mass)
+     call hdf5_read_attribute(file_handle,'/Constants/SOLAR_MASS',solar_mass)
      call hdf5_read_attribute(file_handle,'/Header/ExpansionFactor', ExpansionFactor)
      call hdf5_read_attribute(file_handle,'/Header/Redshift', Redshift)
      !
@@ -4762,7 +4762,7 @@ subroutine read_full_snapshot()
      VarName = trim('PartType0')//'/Velocity/CGSConversionFactor'
      call hdf5_read_attribute(file_handle,VarName,Vel_cgs_unit)
      !
-     VarName = trim('PartType0')//'/Density'        
+     VarName = trim('PartType0')//'/Density'
      call hdf5_read_data(file_handle, VarName, ParticleDensity(NTotal+1:NTotal+Npart_this_file))
      VarName = trim('PartType0')//'/Density/h-scale-exponent'
      call hdf5_read_attribute(file_handle,VarName,Dens_h_exp)
@@ -4771,10 +4771,10 @@ subroutine read_full_snapshot()
      VarName = trim('PartType0')//'/Density/CGSConversionFactor'
      call hdf5_read_attribute(file_handle,VarName,Dens_cgs_unit)
      !
-     VarName = trim('PartType0')//'/StarFormationRate'        
+     VarName = trim('PartType0')//'/StarFormationRate'
      call hdf5_read_data(file_handle,VarName,StarFormationRate(NTotal+1:NTotal+Npart_this_file))
      !
-     VarName = trim('PartType0')//'/SmoothingLength'  
+     VarName = trim('PartType0')//'/SmoothingLength'
      call hdf5_read_data(file_handle, VarName, ParticleSmoothingLength(NTotal+1:NTotal+Npart_this_file))
      !
      if(urchin)then
@@ -4789,9 +4789,9 @@ subroutine read_full_snapshot()
 		VarName = trim('PartType0')//'//apHI'
 		call hdf5_read_data(file_handle, VarName, &
          ParticleNeutralHFraction(NTotal+1:NTotal+Npart_this_file))
-       !VarName = trim('PartType0')//'//MolecularHydrogenMassFraction' maybe molecularHydrogen Mass fraction does not make sense for auora 
+       !VarName = trim('PartType0')//'//MolecularHydrogenMassFraction' maybe molecularHydrogen Mass fraction does not make sense for auora
        !call hdf5_read_data(urchin_file_handle, VarName, &
-       !ParticleMolecularHFraction(NTotal+1:NTotal+Npart_this_file))        
+       !ParticleMolecularHFraction(NTotal+1:NTotal+Npart_this_file))
      endif
      !
      if(gimic)then
@@ -4845,7 +4845,7 @@ subroutine read_full_snapshot()
                         MassFractions(O_index,NTotal+1:NTotal+Npart_this_file))
      !
      ! Metallicity
-     call hdf5_read_attribute(file_handle,'/Constants/Z_Solar', Z_solar)  ! assumed solar metallicity 
+     call hdf5_read_attribute(file_handle,'/Constants/Z_Solar', Z_solar)  ! assumed solar metallicity
      if(use_smoothed_abundance) then
        call hdf5_read_data(file_handle,trim('PartType0')//'/SmoothedMetallicity',Metallicity(NTotal+1:NTotal+Npart_this_file))
      else
@@ -4862,7 +4862,7 @@ subroutine read_full_snapshot()
      VarName = trim('PartType0')//'/Mass/CGSConversionFactor'
      call hdf5_read_attribute(file_handle,VarName,Mass_cgs_unit)
      !
-     Ntotal = Ntotal + Npart_this_file    
+     Ntotal = Ntotal + Npart_this_file
      call hdf5_close_file(file_handle)
      if(urchin) call hdf5_close_file(urchin_file_handle)
      if (MyPE == 0) &
@@ -4889,7 +4889,7 @@ subroutine read_full_snapshot()
   ! note difference in definition of h between gadget (neighbours within h)
   ParticleSmoothingLength  = ParticleSmoothingLength * Coordinates_conv
   !
-  Velocity_conv = Vel_aexp_exp * log10(ExpansionFactor) + vel_h_exp * log10(HubbleParam) + log10(vel_cgs_unit) & 
+  Velocity_conv = Vel_aexp_exp * log10(ExpansionFactor) + vel_h_exp * log10(HubbleParam) + log10(vel_cgs_unit) &
        - log10(1.d5) ! physical km/s
   Velocity_conv = 10.d0**Velocity_conv
   Velocity = Velocity * Velocity_conv
@@ -4908,7 +4908,7 @@ subroutine read_full_snapshot()
   !
   if (read_part_ids_from_file) then
      !
-     !Open partid.hdf5:	
+     !Open partid.hdf5:
      call hdf5_open_file(part_file_handle, particle_file_name, readonly=.true.)
      !
      !read data from partid.hdf5 file:
@@ -4928,7 +4928,7 @@ subroutine read_full_snapshot()
   if(HubbleParam .eq. 0) call abortrun('HubbleParam = 0!')
   Temp_conv          = Temp_aexp_exp * log10(ExpansionFactor) + Temp_h_exp * log10(HubbleParam) + log10(Temp_cgs_unit) ! cgs
   Temp_Conv          = 10.d0**Temp_Conv
-  ParticleTemperature        = ParticleTemperature * Temp_Conv 
+  ParticleTemperature        = ParticleTemperature * Temp_Conv
   !
   if(setmaxt4sfgas) then
     where(StarFormationRate .gt. 0) ParticleTemperature = 1.d4
@@ -5076,8 +5076,8 @@ subroutine impose_metallicity()
   ! Check for sane parameter values:
   if(first_call == 1) then
     first_call = 0
-    if (verbose) then 
-      if(log_normal_scatter) then 
+    if (verbose) then
+      if(log_normal_scatter) then
         write(*,*)"Adding ",Z_sig_dex," dex lognormal metallicity scatter"
       endif
       if(scale_simulation_abundances) then
@@ -5110,7 +5110,7 @@ subroutine impose_metallicity()
   endif
   !
   ! Scale zmetal (=Z/Z_solar) in the next bits of code. Hydrogen and Helium abundances will
-  ! be scaled down to compensate in the final loop of this function:      
+  ! be scaled down to compensate in the final loop of this function:
   !
   ! Scale simulation abundances of all metals
   if(scale_simulation_abundances) then
@@ -5133,7 +5133,7 @@ subroutine impose_metallicity()
   if (impose_z_rho_relation) then
     do i=1, nGas
       ! impose relation between overdensity and metallicity
-      ! z = z_rel*(rho/<rho>)^z_index        
+      ! z = z_rel*(rho/<rho>)^z_index
       ! use Primordial Hydrogen mass fraction
       Overden  =  (ParticleDensity(i)/MassFractions(H_index,i))*(massH/(1.-Ymass)) / rhocb
       zmetal(i) = min(z_mean * OverDen**z_index, maxz_rel)
@@ -5231,7 +5231,7 @@ subroutine modify_metallicity_of_flagged_particles()
   use modified_metallicity
   use atomic_data, only : massH
   !
-  implicit none 
+  implicit none
   integer :: i,ispecies
   double precision :: X_Hydrogen
   !multiplies passed array by flagged_particle_mettalicity
@@ -5362,146 +5362,146 @@ subroutine initialize_ionization_tables
   integer(kind=singleI) ::  i, j, ib, it, id, iz, ii, ion, ioff
   real(kind=doubleR)    :: r1, ran3
   !
-  ! choose which ions will be included in generation of spectra 
-  ! defaults are false (see modules), except for hydrogen 
+  ! choose which ions will be included in generation of spectra
+  ! defaults are false (see modules), except for hydrogen
   nion = 0
   if (doH1) then
      nion = nion + 1
      requireH = .true.
   endif
-  if (doHe2) then 
+  if (doHe2) then
      nion = nion + 1
      requireHe = .true.
   endif
-  if (do21cm) then 
+  if (do21cm) then
      nion = nion + 1
      requireH = .true.
   endif
-  if (doC2) then 
+  if (doC2) then
      nion = nion + 1
      requireC = .true.
   endif
-  if (doC3) then 
+  if (doC3) then
      nion = nion + 1
      requireC = .true.
   endif
-  if (doC4) then 
+  if (doC4) then
      nion = nion + 1
      requireC = .true.
   endif
-  if (doC5) then 
+  if (doC5) then
      nion = nion + 1
      requireC = .true.
   endif
-  if (doC6) then 
+  if (doC6) then
      nion = nion + 1
      requireC = .true.
   endif
-  if (doN2) then 
+  if (doN2) then
      nion = nion + 1
      requireN = .true.
   endif
-  if (doN3) then 
+  if (doN3) then
      nion = nion + 1
      requireN = .true.
   endif
-  if (doN4) then 
+  if (doN4) then
      nion = nion + 1
      requireN = .true.
   endif
-  if (doN5) then 
+  if (doN5) then
      nion = nion + 1
      requireN = .true.
   endif
-  if (doN6) then 
+  if (doN6) then
      nion = nion + 1
      requireN = .true.
   endif
-  if (doN7) then 
+  if (doN7) then
      nion = nion + 1
      requireN = .true.
   endif
-  if (doO1) then 
+  if (doO1) then
      nion = nion + 1
      requireO = .true.
   endif
-  if (doO3) then 
+  if (doO3) then
      nion = nion + 1
      requireO = .true.
   endif
-  if (doO4) then 
+  if (doO4) then
      nion = nion + 1
      requireO = .true.
   endif
-  if (doO5) then 
+  if (doO5) then
      nion = nion + 1
      requireO = .true.
   endif
-  if (doO6) then 
+  if (doO6) then
      nion = nion + 1
      requireO = .true.
   endif
-  if (doO7) then 
+  if (doO7) then
      nion = nion + 1
      requireO = .true.
   endif
-  if (doO8) then 
+  if (doO8) then
      nion = nion + 1
      requireO = .true.
   endif
-  if (doMg2) then 
+  if (doMg2) then
      nion = nion + 1
      requireMg = .true.
   endif
-  if (doNe8) then 
+  if (doNe8) then
      nion = nion + 1
      requireNe = .true.
   endif
-  if (doNe9) then 
+  if (doNe9) then
      nion = nion + 1
      requireNe = .true.
   endif
-  if (doAl2) then 
+  if (doAl2) then
      nion = nion + 1
      requireAl = .true.
   endif
-  if (doAl3) then 
+  if (doAl3) then
      nion = nion + 1
      requireAl = .true.
   endif
-  if (doSi2) then 
+  if (doSi2) then
      nion = nion + 1
      requireSi = .true.
   endif
-  if (doSi3) then 
+  if (doSi3) then
      nion = nion + 1
      requireSi = .true.
   endif
-  if (doSi4) then 
+  if (doSi4) then
      nion = nion + 1
      requireSi = .true.
   endif
-  if (doS5) then 
+  if (doS5) then
      nion = nion + 1
      requireS = .true.
   endif
-  if (doFe2) then 
+  if (doFe2) then
      nion = nion + 1
      requireFe = .true.
   endif
-  if (doFe3) then 
+  if (doFe3) then
      nion = nion + 1
      requireFe = .true.
   endif
-  if (doFe17) then 
+  if (doFe17) then
      nion = nion + 1
      requireFe = .true.
   endif
-  if (doFe19) then 
+  if (doFe19) then
      nion = nion + 1
      requireFe = .true.
   endif
-  if (doFe21) then 
+  if (doFe21) then
      nion = nion + 1
      requireFe = .true.
   endif
@@ -5546,7 +5546,7 @@ subroutine initialize_ionization_tables
      Mg_index = ioff
      ioff = ioff + 1
   endif
-  if (requireNe) then 
+  if (requireNe) then
       if(MyPE == 0) write(*,*)' -- Ne'
      nspecies=nspecies+1
      Ne_index = ioff
@@ -5584,7 +5584,7 @@ subroutine initialize_ionization_tables
     call abortrun('ERROR: nlyman > nlyman_all')
   if (nlyman .gt. n_lines_max) call abortrun('ERROR: nlyman > n_lines_max')
   if (Lambda_H1(1) .ne. lyalpha)  &
-    call abortrun('ERROR: Lambda_H1(1) ne lyalpha')
+    call abortrun('ERROR: Lambda_H1(1) ne ')
   !
   allocate(ions(nion))  ! name of element
   allocate(ion_elnr(nion)) ! index in particle data array
@@ -6025,7 +6025,7 @@ subroutine initialize_ionization_tables
   enddo
   if(verbose .and. mype == 0)then
     write (*,*) ' +++++++++ '
-    write (*,*) 
+    write (*,*)
   endif
 end subroutine initialize_ionization_tables
 
@@ -6051,7 +6051,7 @@ subroutine load_ionbal(ion)
   !
   logical, save :: first_call = .true.
   integer(kind=singleI), save :: nd_old, nt_old, nz_old
-  ! 
+  !
   !If the ion is called '21cm' then force that we load the H1 ionization table
   if (ions(ion) .eq. '21cm') then
     filename = trim(ibdir)//trim('h1')//'.hdf5'
@@ -6106,10 +6106,10 @@ subroutine load_ionbal(ion)
   !
   VarName = '/ionbal'
   call hdf5_read_data(file_handle,VarName,ionbal(1:nz,1:nt,1:nd))
-  call hdf5_close_file(file_handle)     
+  call hdf5_close_file(file_handle)
   !
   if (verbose .and. MyPE == 0) write(*,*) ions(ion), ' Ionization table loaded.'
-  !  
+  !
   do id = 1, nd
      do it=1,nt
         do iz=1,nz
@@ -6146,7 +6146,7 @@ subroutine load_ionbal_singlefile(ion)
   !
   logical, save :: first_call = .true.
   integer(kind=singleI), save :: nd_old, nt_old, nz_old
-  ! 
+  !
   filename = trim(ibdir)//'hm01_Q+G_tables.hdf5'
   call hdf5_open_file(file_handle, filename, readonly=.true.)
   !
@@ -6197,10 +6197,10 @@ subroutine load_ionbal_singlefile(ion)
   !
   VarName = '/'//trim(ions(ion))//'/IonizationFraction'
   call hdf5_read_data(file_handle,VarName,ionbal(1:nz,1:nt,1:nd))
-  call hdf5_close_file(file_handle)     
+  call hdf5_close_file(file_handle)
   !
   if (verbose .and. MyPE == 0) write(*,*) ions(ion), ' Ionization table loaded.'
-  !  
+  !
   do id = 1, nd
      do it=1,nt
         do iz=1,nz
@@ -6268,8 +6268,8 @@ subroutine computeib(z1,z2,iz1,iz2,dz1,dz2,logtemp,logdens,fraction)
 
   ! local variables
   integer i, it1, it2, id1, id2
-  integer i111, i211, i121, i112, i122, i212, i221, i222 
-  real(kind=doubleR) ::  w111, w211, w121, w112, w122, w212, w221, w222 
+  integer i111, i211, i121, i112, i122, i212, i221, i222
+  real(kind=doubleR) ::  w111, w211, w121, w112, w122, w212, w221, w222
   real(kind=doubleR) ::  dd1, dd2, dt1, dt2, logd, logt,ibfactor_use
   real(kind=doubleR)  :: get_fitted_ibfactor
   external get_fitted_ibfactor
@@ -6288,26 +6288,26 @@ subroutine computeib(z1,z2,iz1,iz2,dz1,dz2,logtemp,logdens,fraction)
   endif
 
   logd = logdens - log10(ibfactor_use)
-  
+
   !    Bring temperature within range of ionization table.
-  if (logtemp .lt. ib_logt(1)) then 
+  if (logtemp .lt. ib_logt(1)) then
      logt = ib_logt(1)
-  else if (logtemp .gt. ib_logt(nt)) then 
+  else if (logtemp .gt. ib_logt(nt)) then
      logt = ib_logt(nt)
-  else 
+  else
      logt = logtemp
   endif
 
 !     Bring density within range of ionization table.
-  if (logd .lt. ib_logd(1)) then 
+  if (logd .lt. ib_logd(1)) then
      write(*,*)'WARNING! low'
      logd = ib_logd(1)
-  else if (logd .gt. ib_logd(nd)) then 
+  else if (logd .gt. ib_logd(nd)) then
     write(*,*)'WARNING! high'
      logd = ib_logd(nd)
   endif
 
-!     If we are forcing that we use the highest density above zmax then do this here  
+!     If we are forcing that we use the highest density above zmax then do this here
   if (use_maxdens_above_zmax .and. abs(z2-ib_redshift(nz)) .lt. 1e-2 .and. dz2 .eq. 1.0) then
      logd = ib_logd(nd)
   endif
@@ -6319,7 +6319,7 @@ subroutine computeib(z1,z2,iz1,iz2,dz1,dz2,logtemp,logdens,fraction)
   it1 = it2 - 1
   dt1 = (ib_logt(it2) - logt) / (ib_logt(it2) - ib_logt(it1))
   dt2 = 1. - dt1
-  
+
   id2 = 2
   do while (logd .gt. ib_logd(id2))
      id2 = id2 + 1
@@ -6327,7 +6327,7 @@ subroutine computeib(z1,z2,iz1,iz2,dz1,dz2,logtemp,logdens,fraction)
   id1 = id2 - 1
   dd1 = (ib_logd(id2) - logd) / (ib_logd(id2) - ib_logd(id1))
   dd2 = 1. - dd1
-  
+
 !     Weights:
   w111 = dz1 * dt1 * dd1
   w211 = dz2 * dt1 * dd1
@@ -6337,7 +6337,7 @@ subroutine computeib(z1,z2,iz1,iz2,dz1,dz2,logtemp,logdens,fraction)
   w212 = dz2 * dt1 * dd2
   w122 = dz1 * dt2 * dd2
   w222 = dz2 * dt2 * dd2
-  
+
 !     Indices:
   i111 = iz1 + (it1-1)*nz + (id1-1)*nznt
   i211 = iz2 + (it1-1)*nz + (id1-1)*nznt
@@ -6500,7 +6500,7 @@ subroutine convlv(data,n,respns,m,isign,ans)
     allocate(fft(n))
     nfft = n
   endif
-  !  
+  !
   do  i=1,(m-1)/2
     respns(n+1-i)=respns(m+1-i)
   enddo
@@ -6627,7 +6627,7 @@ subroutine four1(data,nn,isign)
   !
   integer(kind=singleI), intent(in) :: nn, isign
   real(kind=doubleR), intent(inout) :: data(2*nn)
-  ! local variables  
+  ! local variables
   INTEGER i,istep,j,m,mmax,n
   REAL(kind=doubleR) :: tempi,tempr
   REAL(kind=doubleR) ::  theta,wi,wpi,wpr,wr,wtemp
@@ -6681,4 +6681,3 @@ subroutine four1(data,nn,isign)
 end subroutine four1
 
 ! +++++++++++++++++++++++++++++++++++++ ...mathematical +++++++++++++++++++++++++++++++++++++++++++ !
-

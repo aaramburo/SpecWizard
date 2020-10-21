@@ -25,7 +25,7 @@ contains
     real(kind=doubleR)                :: result
     integer i
     logical :: loginterpolate_use, is_positive_use
-    !    
+    !
     ! set defaults
     if(present(is_positive))then
        is_positive_use = is_positive
@@ -62,7 +62,7 @@ contains
   SUBROUTINE spline(x,y,n,yp1,ypn,y2,u)
     ! set-up spline interpolation coefficients
     use numbers
-    implicit none 
+    implicit none
 
     INTEGER(kind=singleI) ::  n
     REAL(kind=doubleR), intent(in)  :: x(:), y(:), yp1, ypn
@@ -104,11 +104,11 @@ contains
   SUBROUTINE splint(xa,ya,y2a,n,x,y)
     ! do spline interpolation
     use numbers
-    implicit none 
+    implicit none
 
     INTEGER(kind=singleI), intent(in) ::  n
 
-    REAL(kind=doubleR), intent(in)    ::  x,xa(:),y2a(:),ya(:)	
+    REAL(kind=doubleR), intent(in)    ::  x,xa(:),y2a(:),ya(:)
     real(kind=doubleR), intent(out)   ::  y
     ! local variables
     INTEGER k
@@ -144,14 +144,14 @@ contains
     use numbers
     use runtime
     use my_mpi
-    implicit none 
+    implicit none
     real(kind=doubleR) :: linint
     integer(kind=singleI), intent(in) :: n
     character(*), intent(in)         :: ionname
     real(kind=doubleR), intent(in)   :: x(n),y(n)
     real(kind=doubleR), intent(in)   :: xx
 
-    !  
+    !
     integer(kind=singleI) ::  klo, khi
     common /splint_ind/ klo, khi
 
@@ -170,13 +170,13 @@ module my_rebin
      implicit none
      real(kind=doubleR), intent(in)  :: input(:)
      real(kind=doubleR), intent(out) :: output(:)
-   
+
      ! local
      integer :: i,j,k,ninbin
      !write(*,*) 'Rebin (wavelength space)'
-     !write(*,'("lambda: ",f7.4,", ", f7.4, ", ", f7.4, " ... ", f7.4)') & 
+     !write(*,'("lambda: ",f7.4,", ", f7.4, ", ", f7.4, " ... ", f7.4)') &
      !     lambda(1), lambda(2), lambda(3), lambda(nvpix)
-     !write(*,'("binned_lambda: ",f7.4,", ", f7.4, ", ",f7.4," ... ",f7.4)') & 
+     !write(*,'("binned_lambda: ",f7.4,", ", f7.4, ", ",f7.4," ... ",f7.4)') &
      !     binned_lambda(1), binned_lambda(2), binned_lambda(3), binned_lambda(n_binned_flux)
 
      j = 1
@@ -192,16 +192,16 @@ module my_rebin
            k = k + 1
         enddo
         if (ninbin .eq. 0) then
-           if (i .lt. nvpix) then 
+           if (i .lt. nvpix) then
               write(*,'("ERROR: Grid too coarse! Binned_lambda = ", f10.3)') binned_lambda(i)
               stop
            endif
-        else 
+        else
            output(i) = output(i) / dble(ninbin)
         endif
      enddo
    end subroutine rebin
-   
+
    subroutine rebin_realspace(input,output)
      use numbers
      use spectra, only: redshift_realspace, binned_redshift_realspace, nppix,&
@@ -209,7 +209,7 @@ module my_rebin
      implicit none
      real(kind=doubleR), intent(in)  :: input(:)
      real(kind=doubleR), intent(out) :: output(:)
-   
+
      ! local
      integer :: i,j,k,ninbin
      real(kind=doubleR) :: pixsize_real
@@ -217,10 +217,10 @@ module my_rebin
      pixsize_real = pixsize / maxlambda
      !
      !write(*, *) 'Rebin (z-space, no pec. vel.)'
-     !write(*,'("redshift_realspace: ",f10.6,", ", f10.6, ", ", f10.6, " ... ", f10.6)') & 
+     !write(*,'("redshift_realspace: ",f10.6,", ", f10.6, ", ", f10.6, " ... ", f10.6)') &
      !     redshift_realspace(1), redshift_realspace(2), redshift_realspace(3), &
      !     redshift_realspace(nppix)
-     !write(*,'("binned_redshift_realspace: ",f10.6,", ", f10.6, ", ",f10.6," ... ",f10.6)') & 
+     !write(*,'("binned_redshift_realspace: ",f10.6,", ", f10.6, ", ",f10.6," ... ",f10.6)') &
      !     binned_redshift_realspace(1), binned_redshift_realspace(2), &
      !     binned_redshift_realspace(3), binned_redshift_realspace(n_binned_realspace)
      !
@@ -239,11 +239,11 @@ module my_rebin
            k = k + 1
         enddo
         if (ninbin .eq. 0) then
-           if (i .lt. nppix) then 
+           if (i .lt. nppix) then
               write(*,'("ERROR: Grid too coarse! Binned_lambda = ", f10.3)') binned_redshift_realspace(i)
               stop
            endif
-        else 
+        else
            output(i) = output(i) / dble(ninbin)
         endif
      enddo
@@ -262,7 +262,7 @@ module uniform_deviate_module
      PARAMETER (MBIG=1000000000,MSEED=161803398,MZ=0,FAC=1.E-9)
      DIMENSION MA(55)
      DATA IFF /0/
-     
+
      IF(IDUM.LT.0.OR.IFF.EQ.0)THEN
         IFF=1
         MJ=MSEED-IABS(IDUM)
@@ -309,7 +309,7 @@ module gaussian_deviate_module
    FUNCTION gasdev(idum)
      use numbers
      use uniform_deviate_module
-     implicit none 
+     implicit none
      INTEGER idum
      real(kind=doubleR) :: gasdev
      !U    USES ran3
@@ -332,7 +332,7 @@ module gaussian_deviate_module
      endif
      return
    END FUNCTION gasdev
-   
+
 
    end module gaussian_deviate_module
 
@@ -350,11 +350,11 @@ module my_random_numbers
      integer :: i
      !
      cycles = 0
-     ! 
+     !
      seed   = seed0 + ispec - 1
-     
+
    end subroutine init_random_numbers
-     
+
    function random(itype)
      use numbers
      use random_numbers
@@ -369,13 +369,13 @@ module my_random_numbers
      type = itype
      if(abs(type) .gt. ntypes) &
           call abortrun(' wrong random function')
-   
+
      if(type .lt. 0)then
         ! re-initialize this counter
         type          = - type
         cycles(type)  = 0
      endif
-   
+
      if(cycles(type) .eq. 0)then
         ! initialize
         iseed = seed(type)
@@ -391,8 +391,8 @@ module my_random_numbers
         cycles(type)  = 1
         current(type) = 0
      endif
-   
-     ! 
+
+     !
      if(current(type) .ge. nran_max)then
         ! need to re-initialize
         iseed = seed(type)
@@ -426,4 +426,3 @@ module my_random_numbers
 
 
 end module my_random_numbers
-
