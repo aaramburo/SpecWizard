@@ -2,7 +2,20 @@ class read_params(object):
     """
     Read the parameter file.
     """
+    
+    
+    
     def __init__(self, par_file):
+        def parsebool(str):
+            str = str.strip()
+            if str in ['true', 'True', 't', 'T', '1']:
+                out = True
+            elif str in ['false', 'False', 'f', 'F', '0']:
+                out = False
+            else:
+                raise ValueError('Could not parse string {} as a boolean'.format(str))
+            return out
+
         with open(par_file, 'r') as input_file:
             for line in input_file:
                 try:
@@ -14,11 +27,12 @@ class read_params(object):
                     attr = label_attr_map[label][0]
                     datatypes = label_attr_map[label][1:]
 
-                    values = [(datatypes[i](data[i])) for i in range(len(data))]
+                    values = [parsebool(data[i]) if datatypes[i] == bool else\
+                                    (datatypes[i](data[i])) for i in range(len(data))]
                     self.__dict__[attr] = values if len(values) > 1 else values[0]
                 except:
-                    print(line)
-
+                    print('Error at parameter file in : '+line)
+                    
 label_attr_map = {
         "ibdir:": ["ibdir",str],
         "datadir:": [ "datadir",str],
