@@ -26,13 +26,21 @@ if (parameters.doH1 and parameters.do_long_spectrum and parameters.nlyman > cons
 if (conts.Lambda_H1[0] !=  const.lyalpha):    # a bit superflus
     print( 'ERROR: Lambda_H1[0] and lyalpha  are not equal ')
 
-ionbal_names = ["h1","he2","c2","c3","c4","n2","n3","n4","n5","o1","o3","o4","o5","o6",  #This elements of this list must be in the same order as
-                "o7","mg2","ne8","al2","al3","si2","si3","si4","s5","fe2","fe3","21cm"] # ions_to_do
+ionbal_names = np.array(["h1","he2","c2","c3","c4","n2","n3","n4","n5","o1","o3","o4","o5","o6",  #This elements of this list must be in the same order as
+                "o7","mg2","ne8","al2","al3","si2","si3","si4","s5","fe2","fe3","21cm"]) # ions_to_do
 
 ionbal_to use = ionbal_names[ions_to_do]
 
 # something like
 
+ionss = []
+first_iteration = True
 for ion_file in ionbal_to_use:
     with h5.File(parameters.ibdir+ion_file+".hdf5","r") as f:
-        f["/ionbal"][...]
+        if first_iteration:
+            first_iteration = False
+            z_ranges_table = f["/redshift"][...]
+            logt_table = f["/logt"][...]
+            logd_talbe = f["/logd"][...]
+        print(ion_file)
+        ionss.append([ion_file,f["/ionbal"][...]])
