@@ -1,15 +1,16 @@
 from read_parameter_file import read_params
 import numpy as np
+import numba 
 
-def computeibb(z1, z2, iz1, iz2, dz1, dz2, log_temp, log_dens, ib_logd, ionizbal, ib_logt,nz, nznt):
+#@numba.jit(nopython=True)
+def computeibb(z1, z2, iz1, iz2, dz1, dz2, log_temp, log_dens, ib_logd, ionizbal, ib_logt,nz, nznt,use_fitted_ibfactor,ibfactor):
 
 
-    parameters = read_params('dummy.par')
 
-    if (parameters.use_fitted_ibfactor):
-        ibfactor_use = 1./(get_fitted_ibfactor[z1]*dz1)
+    if (use_fitted_ibfactor):
+        dms = 0#ibfactor_use = 1./(get_fitted_ibfactor[z1]*dz1)
     else:
-        ibfactor_use = parameters.ibfactor
+        ibfactor_use = ibfactor
 
     logd = log_dens - np.log10(ibfactor_use)
     

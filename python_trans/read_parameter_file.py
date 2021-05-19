@@ -2,9 +2,9 @@ class read_params(object):
     """
     Read the parameter file.
     """
-    
-    
-    
+
+
+
     def __init__(self, par_file):
         def parsebool(str):
             str = str.strip()
@@ -32,7 +32,7 @@ class read_params(object):
                     self.__dict__[attr] = values if len(values) > 1 else values[0]
                 except:
                     print('Error at parameter file in : '+line)
-                    
+
 label_attr_map = {
         "ibdir:": ["ibdir",str],
         "datadir:": [ "datadir",str],
@@ -40,9 +40,11 @@ label_attr_map = {
         "outputdir:": ["outputdir",str],
         "gimic:": ["gimic",bool],
         "aurora:": ["aurora",bool],
+        "COLIBRE:": ["COLIBRE",bool],
         "use_snapshot_file:": ["use_snapshot_file",bool],
         "snap_base:": ["snap_base",str],
         "use_random_los:": ["use_random_los",bool],
+        "use_los_file:": ["use_los_file",bool],
         "los_coordinates_file:": ["los_coordinates_file",str],
         "do_long_spectrum:": ["do_long_spectrum",bool],
         "NoPecVel:": ["NoPecVel",bool],
