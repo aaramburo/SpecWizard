@@ -4,13 +4,15 @@
 # Files and directories
 # ------------------------------------------------------
 #Directory containing ionization files:
-ibdir: /cosma5/data/dp004/dc-wije1/bertone_tables/ionbal/
+#ibdir: /cosma5/data/dp004/dc-wije1/bertone_tables/ionbal/
+ibdir: /home/andres/Documents/ionbal/
 #/cosma5/data/dp004/dc-wije1/bertone_tables/ionbal/
 #/cosma/home/dphlss/tt/Tables/IonisationTables/HM01G+C/
 #/cosma5/data/durham/dc-maga1/Aurora/Aurora/L012N512/Aurora_L012N512_FSN0.6_FESC0.5/output/
 
 #Directory containing LOS files:
-datadir: /cosma7/data/Eagle/ScienceRuns/Planck1/L0012N0188/PE/REFERENCE/data/snapshot_028_z000p000/
+datadir: /home/andres/small_snap/
+#/cosma7/data/Eagle/ScienceRuns/Planck1/L0012N0188/PE/REFERENCE/data/snapshot_028_z000p000/
 # /cosma7/data/Eagle/ScienceRuns/Planck1/L0012N0188/PE/REFERENCE/data/snapshot_028_z000p000/
 #/cosma/home/dp004/dc-maga1/clusterdata/Aurora/Aurora/L012N512/Aurora_L012N512_FSN0.6_FESC0.5/output/snapshot_056/
 # /cosma7/data/Eagle/ScienceRuns/Planck1/L0012N0188/PE/REFERENCE/data/snapshot_028_z000p000/
@@ -33,10 +35,12 @@ outputdir: ./los
 # ------------------------------------------------------
 # GIMIC simulation rather than OWLS?
 gimic: 1
-aurora: 0 
+aurora: 0
+COLIBRE: 0
 #Directly extract LOS from snapshots rather Than use LOS files
-use_snapshot_file: 1 
-snap_base: snap_028_z000p000  
+use_snapshot_file: 1
+use_los_file: 0
+snap_base: snap_028_z000p000
 #snap_028_z000p000
 #snap_056
 
@@ -46,7 +50,7 @@ snap_base: snap_028_z000p000
 # (use_random_los=T) or specify them in a file (use_random_los=F)
 use_random_los: 0
 
-#Only if use_random_los=F and use_snapshot_file=T                    
+#Only if use_random_los=F and use_snapshot_file=T
 #   ASCII text file with following format:
 #     First line, how many LOS in the file
 #     rest of file:  ASCII table with three columns:
@@ -55,25 +59,25 @@ use_random_los: 0
 los_coordinates_file: coordinates.hdf5
 
 # ------------------------------------------------------
-# Long or short spectra	
+# Long or short spectra
   # ------------------------------------------------------
 # Make long spectrum by patching together short los?
 do_long_spectrum: 0
 # ------------------------------------------------------
 # Take into account peculiar velocities or not
 # ------------------------------------------------------
-NoPecVel: 0	
+NoPecVel: 0
 # if F then peculiar velocities are not taken into account
 #-------------------------------------------------------
 # Output Control
 #-------------------------------------------------------
 # Overwrite previous output?
-overwrite: 1  
+overwrite: 1
 
 # Number of spectra to create
 # For short spectra this generates the first nspec spectra per file
 # For long spectra this is the total number of spectra to generate
-# For use_random_los=F this number is ignored and the number of spectra 
+# For use_random_los=F this number is ignored and the number of spectra
 # is equal to the number of lines in los_coordinates_file
 # number of spectra to create
 nspec: 1024
@@ -84,16 +88,16 @@ nspec: 1024
 #  --/SpectrumN/$ION$/RedshiftSpaceOpticalDepthWeightedTemperature_K
 output_zspaceopticaldepthweighted_values: 1
 
-#Only for short spectra: 
+#Only for short spectra:
 #Output real space, mass weighted quantities along the sightline
 #  --/SpectrumN/MassWeighted/LOSPeculiarVelocity_KMpS :
-#  --/SpectrumN/MassWeighted/RealSpaceTemperature_K 
-#  --/SpectrumN/MassWeighted/RealSpaceOverDensity 
+#  --/SpectrumN/MassWeighted/RealSpaceTemperature_K
+#  --/SpectrumN/MassWeighted/RealSpaceOverDensity
 #  --/SpectrumN/MassWeighted/RealSpaceMetalMassFraction
 #All quantities as a function of physical coordinate: /VHubble_KMpS
 output_realspacemassweighted_values: 1
 
-#Only for short spectra: 
+#Only for short spectra:
 #Output real space Nion weighted values separately for each ion
 #  --/SpectrumN/NionWeighted/$ION$/RealSpaceNIon
 #  --/SpectrumN/NionWeighted/$ION$/RealSpaceNIonWeightedLOSPeculiarVelocity_KMpS
@@ -141,11 +145,11 @@ doO7: 0
 doMg2: 0
 doNe8: 1
 doAl2: 0
-doAl3: 0 
+doAl3: 0
 doSi2: 1
 doSi3: 0
 doSi4: 0
-doS5: 1
+doS5: 0
 doFe2: 0
 doFe3: 0
 do21cm: 0
@@ -163,7 +167,7 @@ ibfactor: 1.
 use_fitted_ibfactor: 0
 ibfactor_he_reionization: 0
 
-#If the simulation redshift is larger than the largest redshift in the 
+#If the simulation redshift is larger than the largest redshift in the
 #ionization file then this option makes the code set very high densities
 #i.e. equivalent to the CIE limit
 use_maxdens_above_zmax: 1
@@ -172,13 +176,13 @@ use_maxdens_above_zmax: 1
 # Modify Simulation Metallicity
 # ------------------------------------------------------
 # Modify metal abundances?
-modify_metallicity: 0 
+modify_metallicity: 0
 
 # Everything down to next section is only used if modify_metallicity = T:
 
 # If we specify power law or scatter in the metallicity, then limit its
 # maximum with this parameter:
-maxz_rel: 10.0 
+maxz_rel: 10.0
 #In solar units
 
 # Scale simulation metallicity by a scalar factor?
@@ -189,13 +193,13 @@ z_rel: 1.0
 # impose metallicity z = z_mean * (density/mean density)^z_index, up to maximum metallicity maxz_rel
 impose_z_rho_relation: 1
 z_index: 0.0
-z_mean: 1.0 
+z_mean: 1.0
 # Is in solar units
 # impose log-normal metallicity
 log_normal_scatter: 0
 # divide computational volume in (z_sig_bin)^3 cells, and impose
 # lognormal metallicity with z_sig_dex scatter
-z_sig_bin: 10 
+z_sig_bin: 10
 z_sig_dex: 0.7
 
 # scale individual metal abundances by this (linear) factor:
@@ -240,7 +244,7 @@ sigtonoise: 100.0
 minnoise: 0.0001
 
 # If noise is generated for a spectrum, the following variables are written to
-# the file for each spectrum: 
+# the file for each spectrum:
 #
 #     --SpectrumN/Flux  (noise free spectrum, always written)
 #     --SpectrumN/Noise_Sigma (standard deviation of the noise at each pixel)
@@ -264,7 +268,7 @@ minbother_blue: 1e-13
 minbother_red: 1e-14
 
 # properties of spectra before rebinning: pixel size in km/s
-# specwizard will stop if this is too small compared with 
+# specwizard will stop if this is too small compared with
 # the above parameters.
 vpixsizekms: 1.
 
@@ -287,13 +291,13 @@ minlambda: 4000.0
 maxlambda: 4200.0
 # Min allowed absorption redshift
 zabsmin: 2.1
-# Max allowed absorption redshift 
-zabsmax: 6.0 
+# Max allowed absorption redshift
+zabsmax: 6.0
 nlyman: 1
 #Number of Lyman lines (1 = Ly-alpha, 2 = alpha-beta, etc.; neg. value = use nlyman_all = 31)
 fzresol: 0.05
 # Bin size for simulation files: dz = fzresol*(1+z)
-#                     sight lines are drawn from files with 
+#                     sight lines are drawn from files with
 #                     z_file = z +/- fzresol*(1+z)/2
 #
 

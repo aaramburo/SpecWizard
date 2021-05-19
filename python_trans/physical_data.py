@@ -143,33 +143,33 @@ Lambda_Fe21   = np.array([12.2840])
 f_Fe21        = np.array([1.24])
 
 
-#Quick fix, maybe theres a smarther always
-atom_dic = {"h1":  [massH,Lambda_H1,f_H1],
-            "he2": [massHe,Lambda_He2,f_He2],
-            "c2":  [massC,Lambda_C2,f_C2],
-            "c3":  [massC,Lambda_C3,f_C3],
-            "c4":  [massC,Lambda_C4,f_C4],
-            "n2":  [massN,Lambda_N2,f_N2],
-            "n3":  [massN,Lambda_N3,f_N3],
-            "n4":  [massN,Lambda_N4,f_N4],
-            "n5":  [massN,Lambda_N5,f_N5],
-            "o1":  [massO,Lambda_O1,f_O1],
-            "o3":  [massO,Lambda_O3,f_O3],
-            "o4":  [massO,Lambda_O4,f_O4],
-            "o5":  [massO,Lambda_O5,f_O5],
-            "o6":  [massO,Lambda_O6,f_O6],
-            "o7":  [massO,Lambda_O7,f_O7],
-            "mg2": [massMg,Lambda_Mg2,f_Mg2],
-            "ne8": [massNe,Lambda_Ne8,f_Ne8],
+#Quick fix, maybe theres a smarther as always, the last element is the index in the hdf5
+atom_dic = {"h1":  [massH,Lambda_H1,f_H1,0],
+            "he2": [massHe,Lambda_He2,f_He2,1],
+            "c2":  [massC,Lambda_C2,f_C2,2],
+            "c3":  [massC,Lambda_C3,f_C3,2],
+            "c4":  [massC,Lambda_C4,f_C4,2],
+            "n2":  [massN,Lambda_N2,f_N2,6],
+            "n3":  [massN,Lambda_N3,f_N3,6],
+            "n4":  [massN,Lambda_N4,f_N4,6],
+            "n5":  [massN,Lambda_N5,f_N5,6],
+            "o1":  [massO,Lambda_O1,f_O1,8],
+            "o3":  [massO,Lambda_O3,f_O3,8],
+            "o4":  [massO,Lambda_O4,f_O4,8],
+            "o5":  [massO,Lambda_O5,f_O5,8],
+            "o6":  [massO,Lambda_O6,f_O6,8],
+            "o7":  [massO,Lambda_O7,f_O7,8],
+            "mg2": [massMg,Lambda_Mg2,f_Mg2,5],
+            "ne8": [massNe,Lambda_Ne8,f_Ne8,7],
             "al2": [massAl,Lambda_Al2,f_Al2],
             "al3": [massAl,Lambda_Al3,f_Al3],
-            "si2": [massSi,Lambda_Si2,f_Si2],
-            "si3": [massSi,Lambda_Si3,f_Si3],
-            "si4": [massSi,Lambda_Si4,f_Si4],
+            "si2": [massSi,Lambda_Si2,f_Si2,3],
+            "si3": [massSi,Lambda_Si3,f_Si3,3],
+            "si4": [massSi,Lambda_Si4,f_Si4,3],
             "s5":  [massS,Lambda_S5,f_S5],
-            "fe2": [massFe,Lambda_Fe2,f_Fe2],
-            "fe3": [massFe,Lambda_Fe3,f_Fe3],
-            "21cm":[massH,Lambda_21cm,f_21cm]}
+            "fe2": [massFe,Lambda_Fe2,f_Fe2,4],
+            "fe3": [massFe,Lambda_Fe3,f_Fe3,4],
+            "21cm":[massH,Lambda_21cm,f_21cm,0]}
 
 
 
