@@ -4,12 +4,12 @@ import sys
 import physical_data as const
 import numpy as np
 import read_eagle
-
+import random
 
 
 class read_particle_data():
 
-    def __init__(self,parameters):
+    def __init__(self,parameters,header,LOS_num=None):
         fname = parameters.datadir + parameters.snap_base
         f       = h5.File(fname+'.0.hdf5', 'r')
 
@@ -31,6 +31,33 @@ class read_particle_data():
                 data = np.concatenate(data)
             return data
 
+        def get_coordinates_for_los(header,LOS_num=None):
+            """
+            if use_random_los = True, it generates a random (x,y) starting point for the LOS
+            otherwise it loads from  a coordinate file a fixed pair of points. 
+            Outputs the x and y widths to define the region for read_eagle
+            """
+
+            if parameters.use_random_los:
+                x_frac = random.random() * header.BoxSize
+                y_frac = random.random() * header.BoxSize
+            else:        
+                if LOS_num==None: print("ERROR you must provide the LOS Number for this mode")
+
+                cord_frac = h5.File(parameters.los_coordinates_file,'r')
+                x_frac = cord_frac['Projection/x_fraction_array'][LOS_num] * header.BoxSize
+                y_frac = cord_frac['Projection/y_fraction_array'][LOS_num] * header.BoxSize
+
+            N1D    =  int(float(header.NumPart_Total[0])**1/3)
+            extent = 1./N1D
+
+            RegionExtentX = [x_frac - 8*extent, x_frac + 8*extent]
+            RegionExtentY = [y_frac - 8*extent, y_frac + 8*extent]
+
+            return RegionExtentX,RegionExtentY
+
+
+
 
         self.NumFilesPerSnapshot     = f['Header'].attrs.get("NumFilesPerSnapshot")
 
@@ -44,8 +71,15 @@ class read_particle_data():
         #     Key['EMF'] = 'SmoothedElemenAbundance'
         #     Key['Met'] = 'SmoothedMetallicity'
 
-        if False: #Read_region
+        if parameters.read_eagle: #Read_region
 
+	   
+
+	    fname = parameters.datadir+parameters.snap_base
+	    x_range, y_range = get_coordinates_for_los(header,LOS_num)
+	    snap = read_eagle.EagleSnapshot(fname+".0.hdf5")
+	    snap.select_region(x_range[0], x_range[1],y_range[0], y_range[1],0, header.BoxSize)
+	
             self.Position                       = snap.read_dataset(0, Key['Cords'])
             self.Velocity                       = snap.read_dataset(0, Key['Vel'])
             self.ParticleDensity                = snap.read_dataset(0, Key['Dens'])

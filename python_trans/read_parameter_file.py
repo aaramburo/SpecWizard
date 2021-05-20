@@ -44,6 +44,7 @@ label_attr_map = {
         "use_snapshot_file:": ["use_snapshot_file",bool],
         "snap_base:": ["snap_base",str],
         "use_random_los:": ["use_random_los",bool],
+	"read_eagle:" : ["read_eagle",bool],
         "use_los_file:": ["use_los_file",bool],
         "los_coordinates_file:": ["los_coordinates_file",str],
         "do_long_spectrum:": ["do_long_spectrum",bool],

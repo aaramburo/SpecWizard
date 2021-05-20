@@ -1,6 +1,6 @@
 from read_parameter_file import read_params
 import numpy as np
-import numba 
+
 
 #@numba.jit(nopython=True)
 def computeibb(z1, z2, iz1, iz2, dz1, dz2, log_temp, log_dens, ib_logd, ionizbal, ib_logt,nz, nznt,use_fitted_ibfactor,ibfactor):

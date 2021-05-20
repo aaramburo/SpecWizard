@@ -5,13 +5,16 @@
 # ------------------------------------------------------
 #Directory containing ionization files:
 #ibdir: /cosma5/data/dp004/dc-wije1/bertone_tables/ionbal/
-ibdir: /home/andres/Documents/ionbal/
+ibdir: /cosma5/data/dp004/dc-wije1/bertone_tables/ionbal/
+#/home/andres/Documents/ionbal/
 #/cosma5/data/dp004/dc-wije1/bertone_tables/ionbal/
 #/cosma/home/dphlss/tt/Tables/IonisationTables/HM01G+C/
 #/cosma5/data/durham/dc-maga1/Aurora/Aurora/L012N512/Aurora_L012N512_FSN0.6_FESC0.5/output/
 
 #Directory containing LOS files:
-datadir: /home/andres/small_snap/
+datadir: /cosma6/data/dp004/dc-aram1/VariableIMF/patchrea/12dat/snapshot_028_z000p000/ 
+#/cosma7/data/Eagle/ScienceRuns/Planck1/L0012N0188/PE/REFERENCE/data/snapshot_028_z000p000/
+#use/cosma6/data/dp004/dc-aram1/VariableIMF/patchrea/12dat/snapshot_028_z000p000/
 #/cosma7/data/Eagle/ScienceRuns/Planck1/L0012N0188/PE/REFERENCE/data/snapshot_028_z000p000/
 # /cosma7/data/Eagle/ScienceRuns/Planck1/L0012N0188/PE/REFERENCE/data/snapshot_028_z000p000/
 #/cosma/home/dp004/dc-maga1/clusterdata/Aurora/Aurora/L012N512/Aurora_L012N512_FSN0.6_FESC0.5/output/snapshot_056/
@@ -39,8 +42,10 @@ aurora: 0
 COLIBRE: 0
 #Directly extract LOS from snapshots rather Than use LOS files
 use_snapshot_file: 1
-use_los_file: 0
-snap_base: snap_028_z000p000
+use_los_file: 1
+snap_base: part_los_z0.010
+#snap_028_z000p000
+#snap_028_z000p000
 #snap_028_z000p000
 #snap_056
 
@@ -50,6 +55,7 @@ snap_base: snap_028_z000p000
 # (use_random_los=T) or specify them in a file (use_random_los=F)
 use_random_los: 0
 
+read_eagle: 1
 #Only if use_random_los=F and use_snapshot_file=T
 #   ASCII text file with following format:
 #     First line, how many LOS in the file
