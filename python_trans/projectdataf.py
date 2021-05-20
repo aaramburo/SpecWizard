@@ -1,6 +1,5 @@
 import physical_data as const
 import numpy as np
-from read_ionizationtables import read_iontables
 import time
 from computeibb import computeibb as computeib
 

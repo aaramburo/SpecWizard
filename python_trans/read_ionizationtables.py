@@ -7,7 +7,7 @@ import physical_data as const
 
 class read_iontables():
     """
-    Read the header of the snapshot files, right now works for COLIBRE, Aurora and Eagle
+    read ion tables and return class that contains the data that will be use for the interpolation. 
     """
     def __init__(self, parameters):
         ions_to_do = [parameters.doH1,parameters.doHe2,parameters.doC2,

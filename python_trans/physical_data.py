@@ -1,5 +1,7 @@
 import numpy as np
-
+"""
+File that containes physical constant and usefull relations.
+"""
 
 
 #Physical Cosntants

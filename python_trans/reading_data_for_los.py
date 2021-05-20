@@ -3,16 +3,18 @@ import h5py as h5
 import sys
 import physical_data as const
 import numpy as np
-import read_eagle
+import pyread_eagle as read_eagle
 import random
 
 
 class read_particle_data():
+    """
+    Reads simulation data, in the case of eagle like simulation it uses read_eagle to create a random (or not) 
+    Line of Sight, if read_eagle is not available it would load the whole simulation (It should be discussed how to deal with       cases where there is no a clever way of reading simulation data and a LOS file is not provided 
+    """
 
     def __init__(self,parameters,header,LOS_num=None):
-        fname = parameters.datadir + parameters.snap_base
-        f       = h5.File(fname+'.0.hdf5', 'r')
-
+        #Some functions that we need
         def read_datasets(itype, att, nfiles=16):
             """ Read a selected dataset, itype is the PartType and att is the attribute name. """
             # Output array.
@@ -56,29 +58,28 @@ class read_particle_data():
 
             return RegionExtentX,RegionExtentY
 
-
-
+        #load the simulation file 
+        fname = parameters.datadir + parameters.snap_base
+        f       = h5.File(fname+'.0.hdf5', 'r')
 
         self.NumFilesPerSnapshot     = f['Header'].attrs.get("NumFilesPerSnapshot")
 
+        # As different simulations have different key names on their fields we have to add dictionaries for each simulation case
         if parameters.COLIBRE:
             Key = {'Cords':'Coordinates','Vel':'Velocities','Dens':'Densities','Mass':'Masses','Temp':'Temperatures','SFR':'StarFormationRates','SML':'SmoothingLengths','EMF':'ElementMassFractions'}
 
         else:
             Key = {'Cords':'Coordinates','Vel':'Velocity','Dens':'Density','Mass':'Mass','Temp':'Temperature','SFR':'StarFormationRate','SML':'SmoothingLength','EMF':'ElementAbundance','Met':'Metallicity'}
 
-        # if parameters.use_smoothed_abundance:
-        #     Key['EMF'] = 'SmoothedElemenAbundance'
-        #     Key['Met'] = 'SmoothedMetallicity'
+       
 
-        if parameters.read_eagle: #Read_region
+        if parameters.read_eagle: #If read_eagle is available 
+   
 
-	   
-
-	    fname = parameters.datadir+parameters.snap_base
-	    x_range, y_range = get_coordinates_for_los(header,LOS_num)
-	    snap = read_eagle.EagleSnapshot(fname+".0.hdf5")
-	    snap.select_region(x_range[0], x_range[1],y_range[0], y_range[1],0, header.BoxSize)
+            fname = parameters.datadir+parameters.snap_base   
+            x_range, y_range = get_coordinates_for_los(header,LOS_num) #this function defines the region for read_eagle
+            snap = read_eagle.EagleSnapshot(fname+".0.hdf5")
+            snap.select_region(x_range[0], x_range[1],y_range[0], y_range[1],0, header.BoxSize)
 	
             self.Position                       = snap.read_dataset(0, Key['Cords'])
             self.Velocity                       = snap.read_dataset(0, Key['Vel'])
@@ -228,6 +229,10 @@ class read_header():
 
 
 class read_particle_data_from_los():
+    """
+    This returns los._ class which loads a file that already containes the simulation data in a LOS format
+    """
+    
     def __init__(self,parameters,LOSN=0):
         Key = {'Cords':'Positions',
               'Vel':'Velocity',
@@ -271,7 +276,7 @@ class read_particle_data_from_los():
 
 
 class units_and_factors_for_los():
-    """ Read the units and conversion factors for COLIBRE, Aurora and Eagle """
+    """ Read the units and conversion factors for COLIBRE, Aurora and Eagle (probably a redundant function)"""
     def __init__(self,parameters,LOSN=0):
 
         fname = parameters.datadir + parameters.snap_base

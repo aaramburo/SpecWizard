@@ -1,6 +1,6 @@
 class read_params(object):
     """
-    Read the parameter file.
+    Read the parameter file. 
     """
 
 
