@@ -64,6 +64,13 @@ read_eagle: 1
 #        Third column: Projection axis (0->2)
 los_coordinates_file: coordinates.hdf5
 
+#-------------------------------------------------------
+#Integrate Kernel
+#-------------------------------------------------------
+integrate_kernel: 0
+use_gaussian_kernel: 0
+
+
 # ------------------------------------------------------
 # Long or short spectra
   # ------------------------------------------------------

@@ -1,6 +1,7 @@
 import physical_data as const
 import numpy as np
 import time
+import sys
 from computeibb import computeibb as computeib
 
 
@@ -27,6 +28,15 @@ def redshift_interp_param(nz,ib_redshift,zcurrent,parameters):
     return iz1,iz2,dz1,dz2 
 
 
+def kernel_cubic_spline(dr2,hinv2,hinv3):
+
+    q = np.sqrt(dr2 * hinv2)
+    kernel_factor = np.zeros(np.shape(q))
+    kernel_factor[q<0.5] = (1.+6*q[q<0.5]**2*(q[q<0.5]-1))
+    kernel_factor[(0.5 < q) & (q < 1)] = 2.*(1-q[(0.5 < q) & (q < 1)])**3
+
+    kernel_factor = (kernel_factor * 8. * hinv3) / np.pi
+    return kernel_factor
 
 
 def project_data(los,simdata,parameters,ionpar):
@@ -127,13 +137,19 @@ def project_data(los,simdata,parameters,ionpar):
         dr2 = b2[i] + deltaz**2
         zf = deltaz + dzgrid*0.5
         zi = deltaz - dzgrid*0.5
-        q = np.sqrt(dr2 * hinv2[i])
-
-        kernel_factor = np.zeros(np.shape(q))
-        kernel_factor[q<0.5] = (1.+6*q[q<0.5]**2*(q[q<0.5]-1))
-        kernel_factor[(0.5 < q) & (q < 1)] = 2.*(1-q[(0.5 < q) & (q < 1)])**3
-
-        kernel_factor = (kernel_factor * 8. * hinv3[i]) / np.pi
+        
+        if parameters.integrate_kernel:
+            if parameters.use_gaussian_kernel:
+                print("to be implemented")
+                sys.exit()
+            else:
+                print("to be implemented")
+                sys.exit()
+                
+        else:  #using cubic spline
+        
+            kernel_factor =  kernel_cubic_spline(dr2,hinv2[i],hinv3[i])
+        
         krn_cond = kernel_factor>0
         kernel_chunks = k[krn_cond]
         
