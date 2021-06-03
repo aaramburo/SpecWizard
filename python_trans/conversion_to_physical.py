@@ -29,8 +29,8 @@ def conversion_to_physical(loss,simdata,convert,const):
     loss.ParticleDensity          = loss.ParticleDensity * Density_conv
     #Convert from total density to *Hydrogen* number density
     loss.ParticleDensity          = loss.ParticleDensity * loss.MassFractions[:,0]
-    loss.Metallicity              = loss.Metallicity[...] / const.Zmass_solar  #metallicity in solar units
-    
+    loss.Zmetal                   = loss.Metallicity[...] / const.Zmass_solar  #metallicity in solar units
+         
     #Mass
     Mass_conv                     = convert.Mass_aexp_exp * np.log10(simdata.ExpansionFactor) + convert.Mass_h_exp *                                                 np.log10(simdata.HubbleParam) + np.log10(convert.Mass_cgs_unit) -                                                                 np.log10(convert.solar_mass)
     Mass_conv                     = 10.0**Mass_conv

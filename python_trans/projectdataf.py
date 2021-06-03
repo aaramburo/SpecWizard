@@ -95,10 +95,6 @@ def project_data(los,simdata,parameters,ionpar):
 
     particle_mask = np.where(impactparameter <= hh)
 
-    #if parameters.NoPecVel:
-    vr = 0
-    #else:
-    #    vr = Velocity[i,los_long_axis]
 
     Density = los.ParticleDensity[particle_mask] * densscale
 
@@ -137,6 +133,12 @@ def project_data(los,simdata,parameters,ionpar):
         dr2 = b2[i] + deltaz**2
         zf = deltaz + dzgrid*0.5
         zi = deltaz - dzgrid*0.5
+
+        if parameters.NoPecVel:
+            vr = 0
+        else:
+            vr = los.Velocity[i,2]
+
         
         if parameters.integrate_kernel:
             if parameters.use_gaussian_kernel:
@@ -174,10 +176,10 @@ def project_data(los,simdata,parameters,ionpar):
     los.temp_ion   = temp_ion
     los.rho_ion    = rho_ion
     los.rho_tot    = rho_tot
-    los.veloc_tot  = veloc_tot
-    los.temp_tot   = temp_tot
-    los.met_tot    = met_tot
-    
+    los.veloc_tot  = veloc_tot / rho_tot
+    los.temp_tot   = temp_tot  / rho_tot
+    los.met_tot    = met_tot   / rho_tot
+    los.rho_tot    = rho_tot * 6.76991130339558456e-41   #Msun/Mpc**3 * denscale 
     return los,tf
     
     

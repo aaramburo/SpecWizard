@@ -180,7 +180,7 @@ class read_header():
     Read the header of the snapshot files, right now works for COLIBRE, Aurora and Eagle
     """
     def __init__(self, parameters):
-
+                
         fname = parameters.datadir + parameters.snap_base
 
         if parameters.use_los_file:
@@ -234,6 +234,32 @@ class read_particle_data_from_los():
     """
     
     def __init__(self,parameters,LOSN=0):
+        
+        def los_long_axis(Position):
+            '''
+            Returns the long axis that the LOS belongs to
+            0-x
+            1-y
+            2-z
+            '''
+            return np.argmax([(Position[:,0].max()-Position[:,0].min()),(Position[:,1].max()-Position[:,1].min()),                           (Position[:,2].max()-Position[:,2].min())])
+
+        def align_axis(los_long_axis,Position):
+            '''
+            Changes the frame of reference of the coordinates, depending on the long axis.
+            '''
+            Position_2 = np.zeros(np.shape(Position),dtype=np.float128)
+            if los_long_axis == 0:
+                Position_2[:,0] = Position[:,1]
+                Position_2[:,1] = Position[:,2]
+                Position_2[:,2] = Position[:,0]
+            elif los_long_axis == 1:
+                Position_2[:,0] = Position[:,2]
+                Position_2[:,1] = Position[:,0]
+                Position_2[:,2] = Position[:,1]
+
+            return Position_2        
+        
         Key = {'Cords':'Positions',
               'Vel':'Velocity',
               'Dens':'Density',
@@ -272,6 +298,11 @@ class read_particle_data_from_los():
         self.MassFractions[:,8]             = f[losn+Key['EMF']+'/Oxygen']
         self.x_position                     = f[losn].attrs.get('x-position')
         self.y_position                     = f[losn].attrs.get('y-position')
+        self.los_long_axis                  = los_long_axis(self.Position)
+       
+        if self.los_long_axis != 2:
+            self.Position                   = align_axis(self.los_long_axis,self.Position)
+            self.Velocity                   = align_axis(self.los_long_axis,self.Velocity)
 
 
 
